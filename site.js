@@ -14,15 +14,25 @@
 
 
 // ── GRID CONFIG ─────────────────────────────────────────────
-// Change these three numbers to tune the entire grid.
-// TOTAL_SLOTS: how many equal slots each row is divided into.
-//   - 40 slots = each slot is 2.5% of the row width
-//   - 50 slots = each slot is 2.0% of the row width
+// TOTAL_SLOTS controls how many equal slots each row is divided into.
+// The grid scales down on smaller screens so thumbnails stay visible.
+//
+//   Desktop  (> 1024px) → SLOTS_DESKTOP  slots  (default 40)
+//   Tablet   (600–1024) → SLOTS_TABLET   slots  (default 20)
+//   Mobile   (< 600px)  → SLOTS_MOBILE   slots  (default 10)
+//
+// The gap between sunrise and sunset scales with the same ratio,
+// so the visual proportion of the layout is preserved across devices.
+//
 // THUMB_H: fixed height of every thumbnail row, in pixels.
 
-const TOTAL_SLOTS = 40;    // ← try 40 or 50
-const THUMB_H     = 88;    // px — desktop row height
-const THUMB_H_SM  = 52;    // px — mobile row height (< 600px)
+const SLOTS_DESKTOP = 40;   // ← the canonical grid width (desktop)
+const SLOTS_TABLET  = 20;   // ← iPad / large phone landscape
+const SLOTS_MOBILE  = 10;   // ← iPhone portrait
+
+const THUMB_H       = 88;   // px — desktop row height
+const THUMB_H_MD    = 72;   // px — tablet row height
+const THUMB_H_SM    = 56;   // px — mobile row height
 
 
 // ── LOCATION & WEATHER CONFIG ───────────────────────────────
@@ -42,14 +52,22 @@ const WEATHER_API_KEY = window.__WEATHER_KEY__ || '';
 // Runs on load and on window resize.
 
 function initGrid() {
-  const timeline = document.getElementById('timeline');
+  const timeline  = document.getElementById('timeline');
   const rowWidth  = timeline.clientWidth;
-  const isMobile  = window.innerWidth < 600;
-  const thumbH    = isMobile ? THUMB_H_SM : THUMB_H;
-  const slotW     = rowWidth / TOTAL_SLOTS;
+  const w         = window.innerWidth;
 
-  document.documentElement.style.setProperty('--slot-w',  `${slotW}px`);
-  document.documentElement.style.setProperty('--thumb-h', `${thumbH}px`);
+  // Pick slot count and thumb height based on screen width
+  const slots  = w > 1024 ? SLOTS_DESKTOP : w > 599 ? SLOTS_TABLET : SLOTS_MOBILE;
+  const thumbH = w > 1024 ? THUMB_H       : w > 599 ? THUMB_H_MD   : THUMB_H_SM;
+  const slotW  = rowWidth / slots;
+
+  document.documentElement.style.setProperty('--slot-w',     `${slotW}px`);
+  document.documentElement.style.setProperty('--thumb-h',    `${thumbH}px`);
+  document.documentElement.style.setProperty('--total-slots', slots);
+
+  // Re-render timeline so day headers show correct open-slot counts
+  // (only if DAYS is already loaded)
+  if (typeof DAYS !== 'undefined' && DAYS.length) renderTimeline();
 }
 
 let resizeTimer;
@@ -295,7 +313,9 @@ function renderTimeline() {
   DAYS.forEach(day => {
     const sunrise = day.images.filter(i => i.tag === 'sunrise');
     const sunset  = day.images.filter(i => i.tag === 'sunset');
-    const open    = TOTAL_SLOTS - sunrise.length - sunset.length;
+    // Read current slot count from CSS variable (changes per breakpoint)
+    const currentSlots = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--total-slots')) || SLOTS_DESKTOP;
+    const open    = currentSlots - sunrise.length - sunset.length;
     total += day.images.length;
 
     const block = document.createElement('div');
