@@ -1,8 +1,9 @@
 backend:
   name: github
-  repo: repo: r5andhill/boardshort-photography
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
+  repo: r5andhill/boardshort-photography
+  branch: main
+  auth_type: pkce
+  app_id: Ov23lieu5kYN3EBi7ssG
 
 # Where uploaded photos are stored in the repo
 media_folder: static/uploads
