@@ -1,0 +1,154 @@
+backend:
+  name: github
+  repo: YOUR_GITHUB_USERNAME/golden-hour   # ← replace with your GitHub username
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+# Where uploaded photos are stored in the repo
+media_folder: static/uploads
+public_folder: /static/uploads
+
+# The CMS will be available at boardshort-photography.com/admin
+site_url: https://boardshort-photography.com
+display_url: https://boardshort-photography.com
+
+# ─────────────────────────────────────────────
+# SITE SETTINGS
+# ─────────────────────────────────────────────
+collections:
+
+  - name: settings
+    label: Site Settings
+    files:
+      - name: general
+        label: General Settings
+        file: content/settings.json
+        fields:
+          - { label: Site Title, name: title, widget: string, default: "Golden Hour" }
+          - { label: Tagline, name: tagline, widget: string, default: "A daily archive of light at its edges" }
+          - { label: Photographer Name, name: photographer, widget: string, default: "Boardshort Photography" }
+          - { label: Default Location, name: default_location, widget: string, default: "San Diego, CA" }
+          - { label: Default Latitude, name: default_lat, widget: number, default: 32.7157, step: 0.0001 }
+          - { label: Default Longitude, name: default_lng, widget: number, default: -117.1611, step: 0.0001 }
+
+  # ─────────────────────────────────────────────
+  # DAILY ENTRIES — the heart of the CMS
+  # ─────────────────────────────────────────────
+  - name: days
+    label: Daily Entries
+    label_singular: Day
+    folder: content/days
+    create: true
+    slug: "{{date}}"           # filename = 2025-06-14.json
+    summary: "{{date}} — {{image_count}} photos"
+    sortable_fields: [date]
+    view_groups:
+      - label: Month
+        field: date
+        pattern: \d{4}-\d{2}
+    fields:
+
+      # ── Date
+      - label: Date
+        name: date
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+        hint: "The date you shot these images"
+
+      # ── Hero image for this day
+      - label: Feature this day's hero on site homepage?
+        name: is_hero
+        widget: boolean
+        default: false
+        hint: "Only one day should be marked as hero. This image appears at the top of the site."
+
+      # ── Which image index is the hero (0-based)
+      - label: Hero Image Index
+        name: hero_index
+        widget: number
+        default: 0
+        min: 0
+        hint: "Which photo in the list below is your hero pick? (0 = first, 1 = second, etc.)"
+        condition:
+          field: is_hero
+          value: true
+
+      # ── Location override
+      - label: Location
+        name: location
+        widget: string
+        default: "San Diego, CA"
+        hint: "Override default location for this day (e.g. Torrey Pines, La Jolla Cove)"
+
+      - label: Latitude
+        name: lat
+        widget: number
+        default: 32.7157
+        step: 0.0001
+        hint: "Used for weather lookup. Find at maps.google.com → right-click your spot."
+
+      - label: Longitude
+        name: lng
+        widget: number
+        default: -117.1611
+        step: 0.0001
+
+      # ── THE PHOTOS
+      - label: Photos & Videos
+        name: images
+        widget: list
+        label_singular: Photo
+        summary: "{{fields.time}} · {{fields.caption}}"
+        minimize_collapsed: true
+        fields:
+
+          - label: File
+            name: src
+            widget: image
+            hint: "Upload directly from your camera roll"
+
+          - label: Type
+            name: type
+            widget: select
+            options: [image, video]
+            default: image
+
+          - label: Orientation
+            name: orientation
+            widget: select
+            options:
+              - { label: "Horizontal (landscape)", value: h }
+              - { label: "Vertical (portrait)", value: v }
+            default: h
+            hint: "Is this photo wider than it is tall?"
+
+          - label: Time Taken
+            name: time
+            widget: datetime
+            format: HH:mm
+            date_format: false
+            time_format: HH:mm
+            hint: "Exact time — used to auto-tag sunrise (before solar noon) or sunset (after)"
+
+          - label: Caption
+            name: caption
+            widget: string
+            required: false
+            hint: "Your words. Will appear in the lightbox."
+
+          - label: Weather
+            name: weather
+            widget: string
+            required: false
+            hint: "Leave blank — the site will auto-fetch from OpenWeatherMap using the date, time, and location above. Or type manually to override."
+
+          # Auto-computed tag (displayed in CMS for reference, computed by site at render)
+          - label: Tag (auto)
+            name: tag
+            widget: select
+            options: [sunrise, sunset]
+            required: false
+            hint: "Leave blank — auto-set by the site based on time vs solar noon. Override here if needed."
