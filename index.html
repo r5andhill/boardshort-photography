@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boardshort Photography</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header>
+    <span class="site-title" id="site-title">Boardshort Photography</span>
+    <span class="site-subtitle" id="site-subtitle">A daily archive of light at its edges</span>
+  </header>
+
+  <!-- ── HERO (Featured Image) ── -->
+  <div class="hero" id="hero-wrap" onclick="openLightboxFromHero()" style="display:none">
+    <img id="hero-img" src="" alt="Featured photograph">
+    <div class="hero-tag" id="hero-tag">Sunrise</div>
+    <div class="hero-meta">
+      <div class="hero-caption" id="hero-caption"></div>
+      <div class="hero-data"    id="hero-data"></div>
+    </div>
+  </div>
+
+  <!-- ── TIMELINE ── -->
+  <div class="timeline" id="timeline">
+    <div class="loading-state">Loading archive…</div>
+  </div>
+
+  <!-- ── LIGHTBOX ── -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" onclick="closeLightbox()">ESC · CLOSE</button>
+    <div class="lb-counter" id="lb-counter"></div>
+    <img   class="lb-media" id="lb-img"   src="" alt="" style="display:none">
+    <video class="lb-media" id="lb-video" autoplay muted loop playsinline style="display:none"></video>
+    <div class="lb-controls">
+      <button class="lb-arrow" id="lb-prev" onclick="stepLightbox(-1)">←</button>
+      <button class="lb-arrow" id="lb-next" onclick="stepLightbox(1)">→</button>
+    </div>
+    <div class="lb-info">
+      <div class="lb-caption" id="lb-caption"></div>
+      <div class="lb-meta"    id="lb-meta"></div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <span class="footer-text" id="footer-credit">© Boardshort Photography</span>
+    <span class="footer-text" id="footer-count"></span>
+  </footer>
+
+  <script src="site.js"></script>
+
+</body>
+</html>
