@@ -11,93 +11,105 @@ site_url: https://boardshort-photography.com
 display_url: https://boardshort-photography.com
 
 collections:
-
-- name: days
-  label: Daily Entries
-  label_singular: Day
-  folder: content/days
-  create: true
-  format: json
-  slug: “{{fields.date}}”
-  summary: “{{fields.date}} — {{fields.location}}”
-  sortable_fields: [date]
-  fields:
-  - label: Date
-    name: date
-    widget: datetime
-    format: YYYY-MM-DD
-    date_format: YYYY-MM-DD
-    time_format: false
-    hint: The date you shot these images
-  - label: Location
-    name: location
-    widget: string
-    default: San Diego, CA
-    hint: Where you shot — shown in the lightbox
-  - label: Latitude
-    name: lat
-    widget: number
-    default: 32.7157
-    step: 0.0001
-    hint: “Used for weather. Find at maps.google.com → right-click your spot”
-  - label: Longitude
-    name: lng
-    widget: number
-    default: -117.1611
-    step: 0.0001
-  - label: Photos & Videos
-    name: images
-    widget: list
-    label_singular: Photo
-    summary: “{{fields.time}} · {{fields.caption}}”
+  - name: days
+    label: Daily Entries
+    label_singular: Day
+    folder: content/days
+    create: true
+    format: json
+    slug: "{{fields.date}}"
+    summary: "{{fields.date}} — {{fields.location}}"
+    sortable_fields: [date]
     fields:
-    - label: File
-      name: src
-      widget: image
-      hint: Upload straight from your camera roll
-    - label: Type
-      name: type
-      widget: select
-      options:
-      - { label: Photo, value: image }
-      - { label: Video, value: video }
-        default: image
-    - label: Orientation
-      name: orientation
-      widget: select
-      options:
-      - { label: Horizontal (landscape), value: h }
-      - { label: Vertical (portrait), value: v }
-        default: h
-    - label: Time taken
-      name: time
-      widget: string
-      hint: “24hr format e.g. 06:23 or 19:45 — used to auto-tag sunrise vs sunset”
-      pattern: [’^\d{2}:\d{2}$’, “Must be HH:MM e.g. 06:23”]
-    - label: Caption
-      name: caption
-      widget: string
-      required: false
-      hint: Your words. Appears in the lightbox below the image.
-    - label: Weather
-      name: weather
-      widget: string
-      required: false
-      hint: “Leave blank to auto-fetch, or type manually e.g. 68°F · Clear · Wind NW 12mph”
-    - label: Tag
-      name: tag
-      widget: select
-      options:
-      - { label: Sunrise, value: sunrise }
-      - { label: Sunset, value: sunset }
-        required: false
-        hint: Leave blank — auto-set from time. Override here if needed.
-    - label: Hero image?
-      name: hero
-      widget: select
-      options:
-      - { label: “No”, value: false }
-      - { label: “Yes — add to hero rotation”, value: true }
-        default: false
-        required: false
-        hint: Up to 10 most recent hero images cycle at the top of the site
+
+      - label: Date
+        name: date
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+        hint: The date you shot these images
+
+      - label: Location
+        name: location
+        widget: string
+        default: San Diego, CA
+        hint: Where you shot — shown in the lightbox
+
+      - label: Latitude
+        name: lat
+        widget: number
+        default: 32.7157
+        step: 0.0001
+        hint: "Used for weather. Find at maps.google.com → right-click your spot"
+
+      - label: Longitude
+        name: lng
+        widget: number
+        default: -117.1611
+        step: 0.0001
+
+      - label: Photos & Videos
+        name: images
+        widget: list
+        label_singular: Photo
+        summary: "{{fields.time}} · {{fields.caption}}"
+        fields:
+
+          - label: File
+            name: src
+            widget: image
+            hint: Upload straight from your camera roll
+
+          - label: Type
+            name: type
+            widget: select
+            options:
+              - { label: Photo, value: image }
+              - { label: Video, value: video }
+            default: image
+
+          - label: Orientation
+            name: orientation
+            widget: select
+            options:
+              - { label: Horizontal (landscape), value: h }
+              - { label: Vertical (portrait), value: v }
+            default: h
+
+          - label: Time taken
+            name: time
+            widget: string
+            hint: "24hr format e.g. 06:23 or 19:45 — used to auto-tag sunrise vs sunset"
+            pattern: ['^\d{2}:\d{2}$', "Must be HH:MM e.g. 06:23"]
+
+          - label: Caption
+            name: caption
+            widget: string
+            required: false
+            hint: Your words. Appears in the lightbox below the image.
+
+          - label: Weather
+            name: weather
+            widget: string
+            required: false
+            hint: "Leave blank to auto-fetch, or type manually e.g. 68°F · Clear · Wind NW 12mph"
+
+          - label: Tag
+            name: tag
+            widget: select
+            options:
+              - { label: Sunrise, value: sunrise }
+              - { label: Sunset, value: sunset }
+            required: false
+            hint: Leave blank — auto-set from time. Override here if needed.
+
+          - label: Hero image?
+            name: hero
+            widget: select
+            options:
+              - { label: "No", value: false }
+              - { label: "Yes — add to hero rotation", value: true }
+            default: false
+            required: false
+            hint: Up to 10 most recent hero images cycle at the top of the site
