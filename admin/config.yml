@@ -108,8 +108,8 @@ collections:
             name: hero
             widget: select
             options:
-              - { label: "No", value: false }
-              - { label: "Yes — add to hero rotation", value: true }
-            default: false
+              - { label: "No", value: "false" }
+              - { label: "Yes — add to hero rotation", value: "true" }
+            default: "false"
             required: false
             hint: Up to 10 most recent hero images cycle at the top of the site
