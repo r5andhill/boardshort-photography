@@ -157,17 +157,13 @@ header {
 
 /* Week block — groups 1–7 days under one header */
 .week-block {
-  padding: 0 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--thumb-gap);  /* 2px between rows */
-  animation: fadeUp 0.5s ease both;
+  margin-top: 32px;
 }
 
-.week-block:nth-child(1) { animation-delay: 0.05s; }
-.week-block:nth-child(2) { animation-delay: 0.15s; }
-.week-block:nth-child(3) { animation-delay: 0.25s; }
-.week-block:nth-child(n+4) { animation-delay: 0.3s; }
+.week-block:nth-child(1) { animation: fadeUp 0.4s ease both 0.05s; }
+.week-block:nth-child(2) { animation: fadeUp 0.4s ease both 0.15s; }
+.week-block:nth-child(3) { animation: fadeUp 0.4s ease both 0.25s; }
+/* Beyond 3 weeks visible on load — no animation, just appear */
 
 /* Week header — sits above the first row of the week */
 .week-header {
@@ -273,24 +269,22 @@ header {
   pointer-events: none;
 }
 
-/* CSS watermark — visible on hover */
-.thumb-watermark {
+/* Lightbox watermark — sits over the full-size image */
+.lb-watermark {
   position: absolute;
-  bottom: 4px;
-  left: 0;
-  right: 0;
-  text-align: center;
+  bottom: 96px;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-mono);
-  font-size: 0.38rem;
-  letter-spacing: 0.12em;
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  color: rgba(255,255,255,0.35);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7);
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s;
+  user-select: none;
+  white-space: nowrap;
 }
-.thumb-wrap:hover .thumb-watermark { opacity: 1; }
 
 /* Sunrise / sunset tag — appears on hover */
 .thumb-tag {

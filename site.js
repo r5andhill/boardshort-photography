@@ -49,25 +49,21 @@ const WEATHER_API_KEY = window.__WEATHER_KEY__ || '';
 // Runs on load and on window resize.
 
 function initGrid() {
-  const timeline  = document.getElementById('timeline');
-  const w         = window.innerWidth;
-
-  // Pick thumb height based on screen width
+  const w      = window.innerWidth;
   const thumbH = w > 1024 ? THUMB_H : w > 599 ? THUMB_H_MD : THUMB_H_SM;
-  // Thumbnail width is always 4:3 ratio
   const thumbW = Math.round(thumbH * (4 / 3));
 
   document.documentElement.style.setProperty('--thumb-h',   `${thumbH}px`);
   document.documentElement.style.setProperty('--thumb-w',   `${thumbW}px`);
   document.documentElement.style.setProperty('--thumb-gap', `${THUMB_GAP}px`);
-
-  if (typeof DAYS !== 'undefined' && DAYS.length) renderTimeline();
+  // No re-render — CSS variables update all thumbnails instantly
 }
 
 let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(initGrid, 120);
+  // CSS variables update automatically — no DOM rebuild needed
 });
 
 
@@ -394,17 +390,11 @@ function makeThumb(img) {
     : Object.assign(document.createElement('img'),   { alt: img.caption || '', loading: 'lazy' });
   el.src = img.src;
 
-  // CSS watermark — subtle copyright overlay
-  const watermark = document.createElement('div');
-  watermark.className = 'thumb-watermark';
-  watermark.textContent = '© Boardshort';
-
   const tag = document.createElement('div');
   tag.className = `thumb-tag ${img.tag}`;
   tag.textContent = img.tag;
 
   wrap.appendChild(el);
-  wrap.appendChild(watermark);
   wrap.appendChild(tag);
   wrap.addEventListener('click', () => openLightbox(flatIdx));
   return wrap;
