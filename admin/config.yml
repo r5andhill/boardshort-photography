@@ -39,13 +39,6 @@ collections:
         default: false
         hint: Makes this day's hero image appear at the top of the site
 
-      - label: Hero image number
-        name: hero_index
-        widget: number
-        default: 0
-        min: 0
-        hint: "Which photo is your pick? 0 = first, 1 = second, 2 = third etc."
-
       - label: Location
         name: location
         widget: string
@@ -119,3 +112,9 @@ collections:
               - { label: Sunset, value: sunset }
             required: false
             hint: Leave blank — auto-set from time. Override here if needed.
+
+          - label: Hero image?
+            name: hero
+            widget: boolean
+            default: false
+            hint: Flag this photo for the cycling hero at the top of the page
