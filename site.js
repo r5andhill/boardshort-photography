@@ -265,25 +265,107 @@ let currentFlatIndex = 0;
 let heroFlatIndex    = 0;
 
 
-// ── RENDER HERO ─────────────────────────────────────────────
+// ── HERO CYCLING ────────────────────────────────────────────
+// Collects up to 10 most recent images flagged hero: true.
+// Crossfades between them every 5 seconds.
+// Clicking the meta area opens the current image in the lightbox.
+
+const HERO_MAX      = 10;
+const HERO_INTERVAL = 5000;  // ms between transitions
+const HERO_FADE     = 1200;  // ms crossfade — matches CSS transition
+
+let heroImages  = [];
+let heroIndex   = 0;
+let heroTimer   = null;
+let activeLayer = 'a';
+
+function buildHeroImages() {
+  const candidates = [];
+  DAYS.forEach(day => {
+    day.images.forEach(img => {
+      if (img.hero) candidates.push({ ...img, label: day.label });
+    });
+  });
+  heroImages = candidates.slice(0, HERO_MAX);
+}
 
 function renderHero() {
-  const heroDay = DAYS.find(d => d.is_hero);
-  if (!heroDay) return;
+  buildHeroImages();
 
-  const img = heroDay.images[heroDay.hero_index] || heroDay.images[0];
-  if (!img) return;
+  // Fallback: no hero flags — use first image of newest day
+  if (heroImages.length === 0) {
+    const firstDay = DAYS[0];
+    if (!firstDay || !firstDay.images.length) return;
+    heroImages = [{ ...firstDay.images[0], label: firstDay.label }];
+  }
 
   document.getElementById('hero-wrap').style.display = 'block';
-  document.getElementById('hero-img').src             = img.src;
+
+  heroIndex   = 0;
+  activeLayer = 'a';
+  setHeroLayer('hero-layer-a', heroImages[0]);
+  document.getElementById('hero-layer-a').classList.add('active');
+  document.getElementById('hero-layer-b').classList.remove('active');
+  updateHeroMeta(heroImages[0]);
+
+  // Preload second image into layer B
+  if (heroImages.length > 1) setHeroLayer('hero-layer-b', heroImages[1]);
+
+  // Start cycling if more than one hero image
+  if (heroImages.length > 1) {
+    if (heroTimer) clearInterval(heroTimer);
+    heroTimer = setInterval(cycleHero, HERO_INTERVAL);
+  }
+
+  heroFlatIndex = FLAT.findIndex(f => f.id === heroImages[0].id);
+}
+
+function cycleHero() {
+  const nextIndex = (heroIndex + 1) % heroImages.length;
+  const next      = heroImages[nextIndex];
+  const layerA    = document.getElementById('hero-layer-a');
+  const layerB    = document.getElementById('hero-layer-b');
+
+  if (activeLayer === 'a') {
+    layerB.classList.add('active');
+    layerA.classList.remove('active');
+    activeLayer = 'b';
+    const preload = (nextIndex + 1) % heroImages.length;
+    setTimeout(() => setHeroLayer('hero-layer-a', heroImages[preload]), HERO_FADE);
+  } else {
+    layerA.classList.add('active');
+    layerB.classList.remove('active');
+    activeLayer = 'a';
+    const preload = (nextIndex + 1) % heroImages.length;
+    setTimeout(() => setHeroLayer('hero-layer-b', heroImages[preload]), HERO_FADE);
+  }
+
+  heroIndex     = nextIndex;
+  heroFlatIndex = FLAT.findIndex(f => f.id === next.id);
+  updateHeroMeta(next);
+}
+
+function setHeroLayer(layerId, img) {
+  const layer = document.getElementById(layerId);
+  if (!layer || !img) return;
+  layer.innerHTML = '';
+  const isVideo = img.type === 'video';
+  const el = isVideo
+    ? Object.assign(document.createElement('video'), { autoplay: true, muted: true, loop: true, playsInline: true })
+    : document.createElement('img');
+  el.src = img.src;
+  if (!isVideo) el.alt = img.caption || '';
+  layer.appendChild(el);
+}
+
+function updateHeroMeta(img) {
   document.getElementById('hero-caption').textContent = img.caption || '';
-  document.getElementById('hero-tag').textContent     = img.tag.charAt(0).toUpperCase() + img.tag.slice(1);
+  document.getElementById('hero-tag').textContent =
+    img.tag.charAt(0).toUpperCase() + img.tag.slice(1);
   document.getElementById('hero-tag').style.background =
     img.tag === 'sunrise' ? 'rgba(200,131,60,0.92)' : 'rgba(180,70,40,0.92)';
   document.getElementById('hero-data').innerHTML =
-    `${heroDay.label}<br>${img.time} · ${img.location}<br>${img.weather}`;
-
-  heroFlatIndex = FLAT.findIndex(f => f.id === img.id);
+    `${img.label}<br>${img.time} · ${img.location}<br>${img.weather}`;
 }
 
 

@@ -16,11 +16,17 @@
     <span class="site-subtitle" id="site-subtitle">A daily archive of light at its edges</span>
   </header>
 
-  <!-- ── HERO (Featured Image) ── -->
-  <div class="hero" id="hero-wrap" onclick="openLightboxFromHero()" style="display:none">
-    <img id="hero-img" src="" alt="Featured photograph">
-    <div class="hero-tag" id="hero-tag">Sunrise</div>
-    <div class="hero-meta">
+  <!-- ── HERO (Cycling Featured Images) ── -->
+  <div class="hero" id="hero-wrap" style="display:none">
+    <!-- Two layers crossfade between them -->
+    <div class="hero-layer" id="hero-layer-a">
+      <img src="" alt="Featured photograph">
+    </div>
+    <div class="hero-layer" id="hero-layer-b">
+      <img src="" alt="Featured photograph">
+    </div>
+    <div class="hero-tag"  id="hero-tag">Sunrise</div>
+    <div class="hero-meta" onclick="openLightboxFromHero()">
       <div class="hero-caption" id="hero-caption"></div>
       <div class="hero-data"    id="hero-data"></div>
     </div>

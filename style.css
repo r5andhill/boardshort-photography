@@ -90,20 +90,33 @@ header {
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  height: clamp(320px, 52vh, 640px);
 }
 
-.hero img,
-.hero video {
+/* Two layers sit on top of each other — one fades in as the other fades out */
+.hero-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+}
+
+.hero-layer.active  { opacity: 1; }
+.hero-layer.preload { opacity: 0; } /* loading next image silently */
+
+.hero-layer img,
+.hero-layer video {
   width: 100%;
-  height: clamp(320px, 52vh, 640px);  /* ← adjust hero height here */
+  height: 100%;
   object-fit: cover;
   display: block;
-  transition: opacity 0.4s;
 }
 
-.hero:hover img,
-.hero:hover video {
-  opacity: 0.92;
+.hero:hover .hero-layer.active img,
+.hero:hover .hero-layer.active video {
+  /* subtle brightness lift on hover */
+  filter: brightness(1.04);
+  transition: filter 0.4s;
 }
 
 .hero-meta {
@@ -117,6 +130,8 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  z-index: 10;
+  cursor: pointer;
 }
 
 .hero-caption {
@@ -146,6 +161,8 @@ header {
   background: var(--accent);
   color: #fff;
   padding: 3px 8px;
+  z-index: 10;
+  transition: background 0.8s ease;
 }
 
 
