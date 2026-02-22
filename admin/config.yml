@@ -33,12 +33,6 @@ collections:
         time_format: false
         hint: The date you shot these images
 
-      - label: Feature on homepage?
-        name: is_hero
-        widget: boolean
-        default: false
-        hint: Makes this day's hero image appear at the top of the site
-
       - label: Location
         name: location
         widget: string
@@ -64,6 +58,16 @@ collections:
         label_singular: Photo
         summary: "{{fields.time}} · {{fields.caption}}"
         fields:
+
+          - label: Hero image?
+            name: hero
+            widget: select
+            options:
+              - { label: "Yes", value: true }
+              - { label: "No", value: false }
+            default: false
+            required: false
+            hint: Flag this photo for the cycling hero at the top of the page
 
           - label: File
             name: src
@@ -113,8 +117,3 @@ collections:
             required: false
             hint: Leave blank — auto-set from time. Override here if needed.
 
-          - label: Hero image?
-            name: hero
-            widget: boolean
-            default: false
-            hint: Flag this photo for the cycling hero at the top of the page
