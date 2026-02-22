@@ -283,7 +283,7 @@ function buildHeroImages() {
   const candidates = [];
   DAYS.forEach(day => {
     day.images.forEach(img => {
-      if (img.hero) candidates.push({ ...img, label: day.label });
+      if (img.hero === true || img.hero === 'true') candidates.push({ ...img, label: day.label });
     });
   });
   heroImages = candidates.slice(0, HERO_MAX);
