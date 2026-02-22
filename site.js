@@ -26,13 +26,10 @@
 //
 // THUMB_H: fixed height of every thumbnail row, in pixels.
 
-const SLOTS_DESKTOP = 40;   // ← the canonical grid width (desktop)
-const SLOTS_TABLET  = 20;   // ← iPad / large phone landscape
-const SLOTS_MOBILE  = 10;   // ← iPhone portrait
-
-const THUMB_H       = 88;   // px — desktop row height
-const THUMB_H_MD    = 72;   // px — tablet row height
-const THUMB_H_SM    = 56;   // px — mobile row height
+const THUMB_H       = 80;   // px — desktop row height (width = H × 4/3)
+const THUMB_H_MD    = 64;   // px — tablet row height
+const THUMB_H_SM    = 44;   // px — mobile row height
+const THUMB_GAP     = 2;    // px — gap between thumbnails and between rows
 
 
 // ── LOCATION & WEATHER CONFIG ───────────────────────────────
@@ -53,20 +50,17 @@ const WEATHER_API_KEY = window.__WEATHER_KEY__ || '';
 
 function initGrid() {
   const timeline  = document.getElementById('timeline');
-  const rowWidth  = timeline.clientWidth;
   const w         = window.innerWidth;
 
-  // Pick slot count and thumb height based on screen width
-  const slots  = w > 1024 ? SLOTS_DESKTOP : w > 599 ? SLOTS_TABLET : SLOTS_MOBILE;
-  const thumbH = w > 1024 ? THUMB_H       : w > 599 ? THUMB_H_MD   : THUMB_H_SM;
-  const slotW  = rowWidth / slots;
+  // Pick thumb height based on screen width
+  const thumbH = w > 1024 ? THUMB_H : w > 599 ? THUMB_H_MD : THUMB_H_SM;
+  // Thumbnail width is always 4:3 ratio
+  const thumbW = Math.round(thumbH * (4 / 3));
 
-  document.documentElement.style.setProperty('--slot-w',     `${slotW}px`);
-  document.documentElement.style.setProperty('--thumb-h',    `${thumbH}px`);
-  document.documentElement.style.setProperty('--total-slots', slots);
+  document.documentElement.style.setProperty('--thumb-h',   `${thumbH}px`);
+  document.documentElement.style.setProperty('--thumb-w',   `${thumbW}px`);
+  document.documentElement.style.setProperty('--thumb-gap', `${THUMB_GAP}px`);
 
-  // Re-render timeline so day headers show correct open-slot counts
-  // (only if DAYS is already loaded)
   if (typeof DAYS !== 'undefined' && DAYS.length) renderTimeline();
 }
 
@@ -297,6 +291,36 @@ function renderHero() {
 }
 
 
+// ── WEEK GROUPING ───────────────────────────────────────────
+// Returns the Sunday that starts the week containing a given date.
+function getWeekSunday(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const date = new Date(y, m - 1, d);
+  const day  = date.getDay(); // 0 = Sunday
+  date.setDate(date.getDate() - day);
+  return date.toISOString().slice(0, 10);
+}
+
+// Groups DAYS array into weeks, newest week first.
+// Each week = { sunday: 'YYYY-MM-DD', days: [...] }
+// Within each week, days are newest first (as sorted by DAYS).
+function groupByWeek(days) {
+  const weeks = [];
+  const map   = {};
+  days.forEach(day => {
+    const key = getWeekSunday(day.date);
+    if (!map[key]) {
+      map[key] = { sunday: key, days: [] };
+      weeks.push(map[key]);
+    }
+    map[key].days.push(day);
+  });
+  // Newest week first
+  weeks.sort((a, b) => b.sunday.localeCompare(a.sunday));
+  return weeks;
+}
+
+
 // ── RENDER TIMELINE ─────────────────────────────────────────
 
 function renderTimeline() {
@@ -308,49 +332,53 @@ function renderTimeline() {
     return;
   }
 
-  let total = 0;
+  const weeks = groupByWeek(DAYS);
+  let total   = 0;
 
-  DAYS.forEach(day => {
-    const sunrise = day.images.filter(i => i.tag === 'sunrise');
-    const sunset  = day.images.filter(i => i.tag === 'sunset');
-    // Read current slot count from CSS variable (changes per breakpoint)
-    const currentSlots = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--total-slots')) || SLOTS_DESKTOP;
-    const open    = currentSlots - sunrise.length - sunset.length;
-    total += day.images.length;
+  weeks.forEach(week => {
+    const weekEl = document.createElement('div');
+    weekEl.className = 'week-block';
 
-    const block = document.createElement('div');
-    block.className = 'day-block';
+    // The label shows the MOST RECENT day in the week
+    const latestDay = week.days[0];
+    const sunrise   = latestDay.images.filter(i => i.tag === 'sunrise');
+    const sunset    = latestDay.images.filter(i => i.tag === 'sunset');
+    const open      = Math.max(0, 40 - latestDay.images.length);
 
-    block.innerHTML = `
-      <div class="day-header">
-        <span class="day-date">${day.label}</span>
-        <span class="day-count">${sunrise.length} sunrise · ${sunset.length} sunset · ${open} open</span>
+    weekEl.innerHTML = `
+      <div class="week-header">
+        <span class="week-date">${latestDay.label}</span>
+        <span class="week-count">${sunrise.length} sunrise · ${sunset.length} sunset · ${open} open</span>
       </div>
     `;
 
-    // Contact strip — always TOTAL_SLOTS wide
-    const strip = document.createElement('div');
-    strip.className = 'contact-strip';
+    // Render each day in the week as a contact strip row
+    week.days.forEach(day => {
+      total += day.images.length;
+      const sunriseImgs = day.images.filter(i => i.tag === 'sunrise');
+      const sunsetImgs  = day.images.filter(i => i.tag === 'sunset');
 
-    // LEFT: sunrise fills from left edge
-    const leftCluster = document.createElement('div');
-    leftCluster.className = 'cluster-sunrise';
-    sunrise.forEach(img => leftCluster.appendChild(makeThumb(img)));
+      const strip = document.createElement('div');
+      strip.className = 'contact-strip';
 
-    // MIDDLE: pure white space (flex: 1 takes all remaining width)
-    const gapZone = document.createElement('div');
-    gapZone.className = 'gap-zone';
+      const leftCluster = document.createElement('div');
+      leftCluster.className = 'cluster-sunrise';
+      sunriseImgs.forEach(img => leftCluster.appendChild(makeThumb(img)));
 
-    // RIGHT: sunset fills from right edge
-    const rightCluster = document.createElement('div');
-    rightCluster.className = 'cluster-sunset';
-    sunset.forEach(img => rightCluster.appendChild(makeThumb(img)));
+      const gapZone = document.createElement('div');
+      gapZone.className = 'gap-zone';
 
-    strip.appendChild(leftCluster);
-    strip.appendChild(gapZone);
-    strip.appendChild(rightCluster);
-    block.appendChild(strip);
-    container.appendChild(block);
+      const rightCluster = document.createElement('div');
+      rightCluster.className = 'cluster-sunset';
+      sunsetImgs.forEach(img => rightCluster.appendChild(makeThumb(img)));
+
+      strip.appendChild(leftCluster);
+      strip.appendChild(gapZone);
+      strip.appendChild(rightCluster);
+      weekEl.appendChild(strip);
+    });
+
+    container.appendChild(weekEl);
   });
 
   document.getElementById('footer-count').textContent = `${total} photographs archived`;
@@ -358,8 +386,7 @@ function renderTimeline() {
 
 function makeThumb(img) {
   const flatIdx = FLAT.findIndex(f => f.id === img.id);
-
-  const wrap = document.createElement('div');
+  const wrap    = document.createElement('div');
   wrap.className = 'thumb-wrap' + (img.type === 'video' ? ' is-video' : '');
 
   const el = img.type === 'video'
@@ -367,11 +394,17 @@ function makeThumb(img) {
     : Object.assign(document.createElement('img'),   { alt: img.caption || '', loading: 'lazy' });
   el.src = img.src;
 
+  // CSS watermark — subtle copyright overlay
+  const watermark = document.createElement('div');
+  watermark.className = 'thumb-watermark';
+  watermark.textContent = '© Boardshort';
+
   const tag = document.createElement('div');
   tag.className = `thumb-tag ${img.tag}`;
   tag.textContent = img.tag;
 
   wrap.appendChild(el);
+  wrap.appendChild(watermark);
   wrap.appendChild(tag);
   wrap.addEventListener('click', () => openLightbox(flatIdx));
   return wrap;
