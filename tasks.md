@@ -7,6 +7,7 @@
 - [ ] Build main Boardshorts launcher Shortcut (calls Image, Video, Publish sub-Shortcuts)
 - [ ] Build BS Publish Shortcut (merge draft → main)
 - [ ] Move GitHubToken into main Boardshorts Shortcut, pass as input to sub-Shortcuts
+- [ ] Add day/week date filter to BS Publish Shortcut
 
 ## build.js
 - [ ] Rewrite for sidecar approach — glob content/days/*.json, assemble day pages, derive sunrise/sunset from time field
