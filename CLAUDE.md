@@ -31,7 +31,7 @@ This is a static photography archive site with no framework or build toolchain b
 - `content/index.json` — generated; do not edit by hand
 - `static/uploads/` — image/video files uploaded via CMS
 
-**Content schema** (each day JSON):
+**Content schema** (each day JSON — `lat`/`lng` will be removed in the sidecar rewrite):
 ```json
 {
   "date": "YYYY-MM-DD",
@@ -58,6 +58,22 @@ This is a static photography archive site with no framework or build toolchain b
 **Timeline layout:** Days are grouped by calendar week. Within each day, images split into left (sunrise) and right (sunset) clusters separated by a `gap-zone`. Grid sizing is purely CSS-variable-driven — `initGrid()` sets `--thumb-h`/`--thumb-w` based on viewport width at load and on debounced resize.
 
 **Weather:** Fetched from OpenWeatherMap historical API (One Call 3.0) using `WEATHER_API_KEY` environment variable set in Netlify. Results are cached in `weatherCache` per page session. Set the key in Netlify environment variables — never in code.
+
+## Workflow & Branches
+
+- `main` branch = live site (Netlify deploys from this)
+- `draft` branch = staging; all new work goes here first, merge to `main` when ready to publish
+- The iOS Shortcut (BS Publish) commits photos and sidecar JSON directly to the `draft` branch via GitHub API
+
+## Sidecar Approach (In Progress)
+
+`build.js` needs to be rewritten to support a sidecar file pattern. Each image will have its own companion JSON file (e.g., `2026-03-01-143022.json` alongside `2026-03-01-143022.jpg`) instead of one JSON per day. This eliminates read-modify-write conflicts when the iOS Shortcut uploads multiple images simultaneously. `build.js` should aggregate all sidecar files into `content/index.json` at build time.
+
+The existing schema's `lat` and `lng` fields should be removed in the sidecar rewrite (see Privacy below).
+
+## Privacy
+
+GPS coordinates are never stored in any file. Location is resolved to city + state only, on-device in the iOS Shortcut, before anything is committed to GitHub.
 
 ## Adding a new day manually
 
