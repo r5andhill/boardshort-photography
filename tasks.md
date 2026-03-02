@@ -8,6 +8,7 @@
 - [ ] Build BS Publish Shortcut (merge draft → main)
 - [ ] Move GitHubToken into main Boardshorts Shortcut, pass as input to sub-Shortcuts
 - [ ] Add day/week date filter to BS Publish Shortcut
+- [ ] Build BS Archive Shortcut — prompts for date, finds favorites from that date, shows count, then runs upload flow
 
 ## build.js
 - [ ] Rewrite for sidecar approach — glob content/days/*.json, assemble day pages, derive sunrise/sunset from time field
