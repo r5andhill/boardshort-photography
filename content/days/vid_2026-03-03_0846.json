@@ -1,13 +1,1 @@
-{
-  "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-03_0846.mp4",
-  "original": "GX010663",
-  "type": "video",
-  "orientation": "h",
-  "time": "08:46",
-  "date": "2026-03-03",
-  "caption": "",
-  "hero": "false",
-  "tag": "",
-  "weather": "",
-  "location": "St. Pete Beach, FL"
-}
+{"src":"https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-03_0846.mp4","original":"GX010663","type":"video","orientation":"h","time":"08:46","date":"2026-03-03","tag":"","weather":"","location":"St. Pete Beach, FL"}
