@@ -54,7 +54,8 @@ body {
   /* Grid — set by JS at runtime based on screen size */
   --thumb-w:   107px;  /* 4:3 ratio of --thumb-h (80px) — updated by JS */
   --thumb-h:   80px;   /* fixed row height — updated by JS              */
-  --thumb-gap: 2px;    /* gap between thumbnails and between rows        */
+  --thumb-gap: 2px;    /* gap between thumbnails within a row            */
+  --row-gap:   4px;    /* gap between rows                               */
 }
 
 
@@ -86,7 +87,7 @@ header {
 /* ── HERO IMAGE ───────────────────────────────────────────── */
 
 .hero {
-  padding: 0 48px;
+  padding: 0;
   position: relative;
   overflow: hidden;
   cursor: pointer;
@@ -122,17 +123,27 @@ header {
 .hero-meta {
   position: absolute;
   bottom: 0;
-  left: 48px;
-  right: 48px;
-  padding: 48px 24px 20px;
+  left: 0;
+  right: 0;
+  padding: 48px 48px 20px;
   background: linear-gradient(transparent, rgba(26,24,20,0.75));
   color: #f7f5f0;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
   z-index: 10;
-  cursor: pointer;
+  pointer-events: none;
 }
+.hero-meta-click {
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
 
 .hero-caption {
   font-size: clamp(1rem, 2.2vw, 1.5rem);
@@ -145,15 +156,15 @@ header {
 .hero-data {
   font-family: var(--font-mono);
   font-size: 0.64rem;
-  text-align: right;
+  text-align: left;
   line-height: 1.9;
   opacity: 0.85;
 }
 
 .hero-tag {
   position: absolute;
-  top: 16px;
-  left: 72px;
+  top: 48px;
+  right: 48px;
   font-family: var(--font-mono);
   font-size: 0.6rem;
   letter-spacing: 0.14em;
@@ -164,6 +175,15 @@ header {
   z-index: 10;
   transition: background 0.8s ease;
 }
+
+/* Sunrise — tag + copy both left */
+.hero.is-sunrise .hero-tag    { left: 48px; right: auto; }
+
+/* Sunset — tag + copy both right */
+.hero.is-sunset .hero-tag     { right: 48px; left: auto; }
+.hero.is-sunset .hero-meta    { align-items: flex-end; }
+.hero.is-sunset .hero-caption { text-align: right; }
+.hero.is-sunset .hero-data    { text-align: right; }
 
 
 /* ── TIMELINE ─────────────────────────────────────────────── */
@@ -192,16 +212,9 @@ header {
 
 .week-date {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
   color: var(--ink-light);
-  text-transform: uppercase;
-}
-
-.week-count {
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  color: var(--ink-faint);
 }
 
 
@@ -217,17 +230,20 @@ header {
   align-items: stretch;
   width: 100%;
   height: var(--thumb-h);
-  margin-bottom: var(--thumb-gap);
-  overflow: hidden;
+  margin-bottom: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
   flex-wrap: nowrap;
+  scrollbar-width: none;
 }
+.contact-strip::-webkit-scrollbar { display: none; }
 
 .cluster-sunrise {
   display: flex;
   align-items: stretch;
   flex-shrink: 0;
   flex-wrap: nowrap;
-  gap: var(--thumb-gap);
+  gap: 2px;
 }
 
 .cluster-sunset {
@@ -235,14 +251,35 @@ header {
   align-items: stretch;
   flex-shrink: 0;
   flex-wrap: nowrap;
-  gap: var(--thumb-gap);
+  gap: 2px;
   margin-left: auto;
 }
 
 .gap-zone {
   flex: 1;
-  min-width: 0;
-  /* Pure white space */
+  min-width: var(--thumb-w);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 4px;
+}
+
+.day-count {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.7;
+  pointer-events: none;
+  user-select: none;
+}
+
+.dc-part {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 
@@ -255,6 +292,8 @@ header {
 .thumb-wrap {
   position: relative;
   width: var(--thumb-w);
+  min-width: var(--thumb-w);
+  max-width: var(--thumb-w);
   height: var(--thumb-h);
   flex-shrink: 0;
   cursor: pointer;
@@ -263,10 +302,13 @@ header {
 
 .thumb-wrap img,
 .thumb-wrap video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
+  object-position: center;
   transition: opacity 0.22s, transform 0.28s;
   transform-origin: bottom center;
 }
@@ -281,19 +323,27 @@ header {
 .thumb-wrap.is-video::after {
   content: '▶';
   position: absolute;
-  bottom: 5px;
-  right: 5px;
-  font-size: 0.5rem;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
   color: #fff;
-  opacity: 0.9;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+  opacity: 0.85;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
   pointer-events: none;
 }
 
-/* Lightbox watermark — sits over the full-size image */
+/* Wraps lb-img and lb-video — watermark is positioned inside image bounds */
+#lb-media-wrap {
+  position: relative;
+  line-height: 0;
+}
+
+/* Lightbox watermark — horizontally centered, 15px from bottom of image */
 .lb-watermark {
   position: absolute;
-  bottom: 96px;
+  bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-mono);
@@ -306,6 +356,8 @@ header {
   user-select: none;
   white-space: nowrap;
 }
+
+
 
 /* Sunrise / sunset tag — appears on hover */
 .thumb-tag {
@@ -324,7 +376,7 @@ header {
 
 .thumb-wrap:hover .thumb-tag { opacity: 1; }
 .thumb-tag.sunrise { background: rgba(248,210,140,0.92); color: #5a3a00; }
-.thumb-tag.sunset  { background: rgba(200,100,60,0.88);  color: #fff;    }
+.thumb-tag.sunset  { background: rgba(200,100,60,0.88);  color: #fff; left: auto; right: 3px; }
 
 
 /* ── LIGHTBOX ─────────────────────────────────────────────── */
@@ -347,6 +399,11 @@ header {
   max-height: 78vh;
   object-fit: contain;
   display: block;
+}
+
+#lb-video {
+  width: min(92vw, calc(78vh * 16 / 9));
+  aspect-ratio: 16 / 9;
 }
 
 .lb-controls {
@@ -502,25 +559,28 @@ footer {
 /* iPad portrait and smaller */
 @media (max-width: 1023px) {
   header                          { padding: 32px 24px 24px; }
-  .hero, .timeline, footer        { padding-left: 24px; padding-right: 24px; }
-  .hero-meta                      { left: 24px; right: 24px; }
-  .hero-tag                       { left: 28px; }
-  .day-header                     { flex-direction: column; gap: 3px; }
+  .timeline, footer               { padding-left: 24px; padding-right: 24px; }
+  .hero-meta                      { padding-left: 24px; padding-right: 24px; }
+  .hero-tag                       { top: 24px; right: 24px; }
+  .hero.is-sunrise .hero-tag      { left: 24px; right: auto; }
+  /* contact-strip scroll already set in base styles */
 }
 
 /* iPhone */
 @media (max-width: 599px) {
   header                          { padding: 22px 16px 16px; flex-direction: column; gap: 4px; }
-  .hero, .timeline, footer        { padding-left: 16px; padding-right: 16px; }
-  .hero-meta                      { left: 16px; right: 16px; flex-direction: column; align-items: flex-start; gap: 6px; }
-  .hero-tag                       { left: 20px; }
+  .timeline, footer               { padding-left: 16px; padding-right: 16px; }
+  .hero-meta                      { padding-left: 16px; padding-right: 16px; }
+  .hero-tag                       { top: 16px; right: 16px; }
   .hero-caption                   { max-width: 100%; font-size: 1rem; }
-  .hero-data                      { text-align: left; }
+  .hero.is-sunrise .hero-tag      { left: 16px; right: auto; }
+  .hero.is-sunset .hero-tag       { right: 16px; left: auto; }
   .lb-info                        { flex-direction: column; align-items: flex-start; padding: 16px 16px 24px; }
   .lb-caption                     { max-width: 100%; margin-bottom: 8px; font-size: 1rem; }
   .lb-meta                        { text-align: left; }
   .lb-controls                    { padding: 0 8px; }
   .lb-arrow                       { width: 38px; height: 38px; }
+  .day-count                      { font-size: 0.42rem; }
 }
 
 
