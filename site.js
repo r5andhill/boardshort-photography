@@ -242,7 +242,7 @@ async function processDays(days) {
         date:     img.date || day.date,
         tag,
         weather:  weather || '—',
-        location: day.location || 'San Diego, CA',
+        location: img.location || day.location || 'San Diego, CA',
       });
     }
 
