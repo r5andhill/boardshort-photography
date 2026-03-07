@@ -58,7 +58,7 @@ for (const file of files) {
 
 // Sort each day's images by time ascending
 for (const day of Object.values(dayMap)) {
-  day.images.sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+  day.images.sort((a, b) => (a.time || '') < (b.time || '') ? -1 : (a.time || '') > (b.time || '') ? 1 : 0);
 }
 
 // Sort days newest-first

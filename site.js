@@ -441,10 +441,9 @@ function renderTimeline() {
     // Render each day in the week as a contact strip row
     week.days.forEach(day => {
       total += day.images.length;
-      const sunriseImgs = day.images.filter(i => i.tag === 'sunrise')
-                                    .sort((a, b) => a.time.localeCompare(b.time));
-      const sunsetImgs  = day.images.filter(i => i.tag === 'sunset')
-                                    .sort((a, b) => a.time.localeCompare(b.time));
+      const timeAsc     = (a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
+      const sunriseImgs = day.images.filter(i => i.tag === 'sunrise').sort(timeAsc);
+      const sunsetImgs  = day.images.filter(i => i.tag === 'sunset').sort(timeAsc);
 
       const strip = document.createElement('div');
       strip.className = 'contact-strip';
