@@ -579,9 +579,14 @@ function renderLightboxFrame() {
 
   // Order Print mailto link
   const imgUrl  = item.src.startsWith('http') ? item.src : `${window.location.origin}${item.src}`;
-  const subject = encodeURIComponent(`Print Order Request — ${item.date} ${item.time} ${item.location}`);
-  const body    = encodeURIComponent(`Date: ${item.date}\nTime: ${item.time}\nLocation: ${item.location}\nImage: ${imgUrl}`);
-  document.getElementById('lb-print').href = `mailto:info@boardshort-photography.com?subject=${subject}&body=${body}`;
+  const subject = encodeURIComponent(`Print Order Request — ${item.date} ${item.original || item.time}`);
+  const bodyLines = [
+    `Date: ${item.date}`,
+    `Time: ${item.time}`,
+    item.original ? `File: ${item.original}` : '',
+    `Image: ${imgUrl}`,
+  ].filter(Boolean).join('\n');
+  document.getElementById('lb-print').href = `mailto:info@boardshort-photography.com?subject=${subject}&body=${encodeURIComponent(bodyLines)}`;
 }
 
 // Keyboard navigation
