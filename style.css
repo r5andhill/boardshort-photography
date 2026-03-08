@@ -549,6 +549,73 @@ footer {
 }
 .cc-link:hover { color: var(--ink-light); }
 
+/* ── ORDER PRINT BADGE ────────────────────────────────────── */
+
+.lb-print {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(247,245,240,0.45);
+  text-decoration: none;
+  border: 1px solid rgba(247,245,240,0.2);
+  padding: 5px 12px;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.lb-print:hover {
+  color: rgba(247,245,240,0.9);
+  border-color: rgba(247,245,240,0.5);
+}
+
+/* ── ABOUT OVERLAY ────────────────────────────────────────── */
+
+.about-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(20,18,14,0.85);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.about-overlay.open { display: flex; }
+
+.about-box {
+  position: relative;
+  max-width: 560px;
+  width: 100%;
+  background: #1a1814;
+  border: 1px solid rgba(247,245,240,0.1);
+  padding: 52px 48px 40px;
+  color: rgba(247,245,240,0.8);
+  font-family: var(--font-serif);
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  font-weight: 300;
+  line-height: 1.75;
+}
+.about-box p { margin: 0 0 1.2em; }
+.about-box p:last-child { margin-bottom: 0; }
+
+.about-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: rgba(247,245,240,0.4);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s;
+}
+.about-close:hover { color: rgba(247,245,240,0.9); }
+
 
 /* ── RESPONSIVE ───────────────────────────────────────────── */
 /*

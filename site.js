@@ -576,20 +576,46 @@ function renderLightboxFrame() {
     `${currentFlatIndex + 1} / ${FLAT.length}`;
   document.getElementById('lb-prev').disabled = (currentFlatIndex === 0);
   document.getElementById('lb-next').disabled = (currentFlatIndex === FLAT.length - 1);
+
+  // Order Print mailto link
+  const imgUrl  = item.src.startsWith('http') ? item.src : `${window.location.origin}${item.src}`;
+  const subject = encodeURIComponent(`Print Order Request — ${item.date} ${item.time} ${item.location}`);
+  const body    = encodeURIComponent(`Date: ${item.date}\nTime: ${item.time}\nLocation: ${item.location}\nImage: ${imgUrl}`);
+  document.getElementById('lb-print').href = `mailto:info@boardshort-photography.com?subject=${subject}&body=${body}`;
 }
 
 // Keyboard navigation
 document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('lightbox').classList.contains('open')) closeLightbox();
+    else closeAbout();
+    return;
+  }
   if (!document.getElementById('lightbox').classList.contains('open')) return;
   if (e.key === 'ArrowLeft')  stepLightbox(-1);
   if (e.key === 'ArrowRight') stepLightbox(1);
-  if (e.key === 'Escape')     closeLightbox();
 });
 
 // Click backdrop to close
 document.getElementById('lightbox').addEventListener('click', function (e) {
   if (e.target === this) closeLightbox();
 });
+
+
+// ── ABOUT OVERLAY ────────────────────────────────────────────
+
+function openAbout(e) {
+  e.preventDefault();
+  document.getElementById('about-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAbout(e) {
+  // Called from: X button (no event), backdrop click (event), Escape key (no event)
+  if (e && e.target !== document.getElementById('about-overlay')) return;
+  document.getElementById('about-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
 
 
 // ── LIGHTBOX MEDIA WRAP ──────────────────────────────────────
