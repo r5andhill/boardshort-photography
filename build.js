@@ -1,8 +1,9 @@
 const fs   = require('fs');
 const path = require('path');
 
-const DAYS_DIR = path.join(__dirname, 'content', 'days');
-const OUTPUT   = path.join(__dirname, 'content', 'index.json');
+const DAYS_DIR       = path.join(__dirname, 'content', 'days');
+const OUTPUT         = path.join(__dirname, 'content', 'index.json');
+const HERO_MANIFEST  = path.join(__dirname, 'hero-manifest.json');
 
 if (!fs.existsSync(path.join(__dirname, 'content'))) {
   fs.mkdirSync(path.join(__dirname, 'content'), { recursive: true });
@@ -25,7 +26,8 @@ function normalizeImage(img) {
 }
 
 // dayMap: date string -> { date, location, images[] }
-const dayMap = {};
+const dayMap      = {};
+const heroManifest = [];
 
 const files = fs.existsSync(DAYS_DIR)
   ? fs.readdirSync(DAYS_DIR).filter(f => f.endsWith('.json')).sort()
@@ -41,13 +43,23 @@ for (const file of files) {
       const date = data.date;
       if (!date) { console.warn(`Skipping ${file}: no date field`); continue; }
       if (!dayMap[date]) dayMap[date] = { date, location: data.location || '', images: [] };
-      dayMap[date].images.push(normalizeImage(data));
+      const img = normalizeImage(data);
+      dayMap[date].images.push(img);
+      if (img.hero === true || img.hero === 'true') {
+        heroManifest.push({ src: img.src, sidecar: `content/days/${file}` });
+      }
     } else if (Array.isArray(data.images)) {
       // Per-day format: day object with images array
       const date = data.date;
       if (!date) { console.warn(`Skipping ${file}: no date field`); continue; }
       if (!dayMap[date]) dayMap[date] = { date, location: data.location || '', images: [] };
-      data.images.forEach(img => dayMap[date].images.push(normalizeImage(img)));
+      data.images.forEach(rawImg => {
+        const img = normalizeImage(rawImg);
+        dayMap[date].images.push(img);
+        if (img.hero === true || img.hero === 'true') {
+          heroManifest.push({ src: img.src, sidecar: `content/days/${file}` });
+        }
+      });
     } else {
       console.warn(`Skipping ${file}: unrecognized format`);
     }
@@ -58,11 +70,13 @@ for (const file of files) {
 
 // Sort each day's images by time ascending
 for (const day of Object.values(dayMap)) {
-  day.images.sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+  day.images.sort((a, b) => (a.time || '') < (b.time || '') ? -1 : (a.time || '') > (b.time || '') ? 1 : 0);
 }
 
 // Sort days newest-first
 const days = Object.values(dayMap).sort((a, b) => b.date.localeCompare(a.date));
 
 fs.writeFileSync(OUTPUT, JSON.stringify(days, null, 2));
+fs.writeFileSync(HERO_MANIFEST, JSON.stringify(heroManifest, null, 2));
 console.log(`Built content/index.json — ${days.length} days, ${days.reduce((n, d) => n + d.images.length, 0)} images`);
+console.log(`Built hero-manifest.json — ${heroManifest.length} hero images`);
