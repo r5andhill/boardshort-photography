@@ -6,7 +6,7 @@
   <title>Boardshort Photography</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -26,9 +26,11 @@
       <img src="" alt="Featured photograph">
     </div>
     <div class="hero-tag"  id="hero-tag">Sunrise</div>
-    <div class="hero-meta" onclick="openLightboxFromHero()">
-      <div class="hero-caption" id="hero-caption"></div>
-      <div class="hero-data"    id="hero-data"></div>
+    <div class="hero-meta">
+      <div class="hero-meta-click" onclick="openLightboxFromHero()">
+        <div class="hero-caption" id="hero-caption"></div>
+        <div class="hero-data"    id="hero-data"></div>
+      </div>
     </div>
   </div>
 
@@ -42,7 +44,7 @@
     <button class="lb-close" onclick="closeLightbox()">ESC · CLOSE</button>
     <div class="lb-counter" id="lb-counter"></div>
     <img   class="lb-media" id="lb-img"   src="" alt="" style="display:none">
-    <video class="lb-media" id="lb-video" autoplay muted loop playsinline style="display:none"></video>
+    <video class="lb-media" id="lb-video" autoplay muted loop playsinline controls style="display:none"></video>
     <div class="lb-watermark">© Boardshort Photography — CC BY-NC-ND 4.0</div>
     <div class="lb-controls">
       <button class="lb-arrow" id="lb-prev" onclick="stepLightbox(-1)">←</button>
@@ -52,20 +54,33 @@
       <div class="lb-caption" id="lb-caption"></div>
       <div class="lb-meta"    id="lb-meta"></div>
     </div>
+    <a class="lb-print" id="lb-print" href="#">Order Print</a>
+  </div>
+
+  <!-- ── ABOUT OVERLAY ── -->
+  <div class="about-overlay" id="about-overlay" onclick="closeAbout(event)">
+    <div class="about-box">
+      <button class="about-close" onclick="closeAbout()">✕</button>
+      <p>I'm Rand — I shoot sunrise and sunset, wherever I happen to be.</p>
+      <p>iPhone and GoPro. No heavy gear, no studio setup. Just showing up before dawn or staying past dark to catch the light doing something it shouldn't.</p>
+      <p>This is my daily archive of what the sky looks like from wherever I'm standing — and a portfolio of the work I'm most proud of. The ordinary mornings that turn extraordinary. The angles that only exist for thirty seconds. The color you wouldn't believe if you weren't there.</p>
+    </div>
   </div>
 
   <!-- ── FOOTER ── -->
   <footer>
-    <span class="footer-text" id="footer-credit">© Boardshort Photography</span>
+    <span class="footer-text" id="footer-credit">© <span id="footer-year"></span> Boardshort Photography</span>
     <span class="footer-text" id="footer-count"></span>
     <span class="footer-text">
       <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener" class="cc-link">
         CC BY-NC-ND 4.0
       </a>
+      · #shotoniphone · #gopro
+      · <a href="#" class="cc-link" onclick="openAbout(event)">About</a>
     </span>
   </footer>
 
-  <script src="site.js"></script>
+  <script src="site.js?v=3"></script>
 
 </body>
 </html>

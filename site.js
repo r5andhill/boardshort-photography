@@ -26,10 +26,11 @@
 //
 // THUMB_H: fixed height of every thumbnail row, in pixels.
 
-const THUMB_H       = 80;   // px — desktop row height (width = H × 4/3)
-const THUMB_H_MD    = 64;   // px — tablet row height
-const THUMB_H_SM    = 44;   // px — mobile row height
-const THUMB_GAP     = 2;    // px — gap between thumbnails and between rows
+const THUMB_H       = 72;   // px — desktop row height (width = H × 4/3)
+const THUMB_H_MD    = 58;   // px — tablet row height
+const THUMB_H_SM    = 40;   // px — mobile row height
+const THUMB_GAP     = 2;    // px — gap between thumbnails within a row
+const ROW_GAP       = 4;    // px — gap between rows
 
 
 // ── LOCATION & WEATHER CONFIG ───────────────────────────────
@@ -56,6 +57,7 @@ function initGrid() {
   document.documentElement.style.setProperty('--thumb-h',   `${thumbH}px`);
   document.documentElement.style.setProperty('--thumb-w',   `${thumbW}px`);
   document.documentElement.style.setProperty('--thumb-gap', `${THUMB_GAP}px`);
+  document.documentElement.style.setProperty('--row-gap',   `${ROW_GAP}px`);
   // No re-render — CSS variables update all thumbnails instantly
 }
 
@@ -236,10 +238,11 @@ async function processDays(days) {
 
       images.push({
         ...img,
-        id: img.id || `${day.date}-${img.time}-${Math.random().toString(36).slice(2, 6)}`,
+        id:       img.id || `${day.date}-${img.time}-${Math.random().toString(36).slice(2, 6)}`,
+        date:     img.date || day.date,
         tag,
         weather:  weather || '—',
-        location: day.location || 'San Diego, CA',
+        location: img.location || day.location || 'San Diego, CA',
       });
     }
 
@@ -359,6 +362,9 @@ function setHeroLayer(layerId, img) {
 }
 
 function updateHeroMeta(img) {
+  const hero = document.querySelector('.hero');
+  hero.classList.toggle('is-sunrise', img.tag === 'sunrise');
+  hero.classList.toggle('is-sunset',  img.tag === 'sunset');
   document.getElementById('hero-caption').textContent = img.caption || '';
   document.getElementById('hero-tag').textContent =
     img.tag.charAt(0).toUpperCase() + img.tag.slice(1);
@@ -417,24 +423,27 @@ function renderTimeline() {
     const weekEl = document.createElement('div');
     weekEl.className = 'week-block';
 
-    // The label shows the MOST RECENT day in the week
-    const latestDay = week.days[0];
-    const sunrise   = latestDay.images.filter(i => i.tag === 'sunrise');
-    const sunset    = latestDay.images.filter(i => i.tag === 'sunset');
-    const open      = Math.max(0, 40 - latestDay.images.length);
+    // Date range header: newest day – oldest day in the week
+    const newestDay   = week.days[0];
+    const oldestDay   = week.days[week.days.length - 1];
+    const newestLabel = newestDay.label.toUpperCase();
+    const oldestLabel = oldestDay.label.toUpperCase();
+    const rangeLabel  = newestDay.date === oldestDay.date
+      ? newestLabel
+      : `${newestLabel} – ${oldestLabel}`;
 
     weekEl.innerHTML = `
       <div class="week-header">
-        <span class="week-date">${latestDay.label}</span>
-        <span class="week-count">${sunrise.length} sunrise · ${sunset.length} sunset · ${open} open</span>
+        <span class="week-date">${rangeLabel}</span>
       </div>
     `;
 
     // Render each day in the week as a contact strip row
     week.days.forEach(day => {
       total += day.images.length;
-      const sunriseImgs = day.images.filter(i => i.tag === 'sunrise');
-      const sunsetImgs  = day.images.filter(i => i.tag === 'sunset');
+      const timeAsc     = (a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
+      const sunriseImgs = day.images.filter(i => i.tag === 'sunrise').sort(timeAsc);
+      const sunsetImgs  = day.images.filter(i => i.tag === 'sunset').sort(timeAsc);
 
       const strip = document.createElement('div');
       strip.className = 'contact-strip';
@@ -443,8 +452,31 @@ function renderTimeline() {
       leftCluster.className = 'cluster-sunrise';
       sunriseImgs.forEach(img => leftCluster.appendChild(makeThumb(img)));
 
-      const gapZone = document.createElement('div');
+      // Gap zone — fixed-width info column between sunrise and sunset clusters
+      const gapZone  = document.createElement('div');
       gapZone.className = 'gap-zone';
+      const srCount  = sunriseImgs.length;
+      const ssCount  = sunsetImgs.length;
+      const [dy, dm, dd] = day.date.split('-').map(Number);
+      const shortDate = new Date(dy, dm - 1, dd)
+        .toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+        .toUpperCase();
+      const nb    = '\u00A0';
+      const parts = [shortDate];
+      if (srCount && ssCount) {
+        parts.push(`${srCount}${nb}sunrise`);
+        parts.push(`${ssCount}${nb}sunset`);
+      } else if (srCount) {
+        parts.push(`${srCount}${nb}sunrise`);
+      } else {
+        parts.push(`${ssCount}${nb}sunset`);
+      }
+      const countEl = document.createElement('span');
+      countEl.className = 'day-count';
+      countEl.innerHTML = parts
+        .map((p, i) => `<span class="dc-part">${p}${i < parts.length - 1 ? ' ·' : ''}</span>`)
+        .join(' ');
+      gapZone.appendChild(countEl);
 
       const rightCluster = document.createElement('div');
       rightCluster.className = 'cluster-sunset';
@@ -459,7 +491,7 @@ function renderTimeline() {
     container.appendChild(weekEl);
   });
 
-  document.getElementById('footer-count').textContent = `${total} photographs archived`;
+  document.getElementById('footer-count').textContent = `${total} photos & videos archived`;
 }
 
 function makeThumb(img) {
@@ -520,8 +552,8 @@ function renderLightboxFrame() {
 
   if (item.type === 'video') {
     lbImg.style.display   = 'none';
-    lbVideo.style.display = 'block';
     lbVideo.src           = item.src;
+    lbVideo.style.display = 'block';
     lbVideo.play();
   } else {
     lbVideo.style.display = 'none';
@@ -532,8 +564,10 @@ function renderLightboxFrame() {
   }
 
   document.getElementById('lb-caption').textContent = item.caption || '';
+  const dateLabel = item.date ? formatDateLabel(item.date) : '';
   document.getElementById('lb-meta').innerHTML = `
     <span class="tag-pill ${item.tag}">${item.tag}</span><br>
+    ${dateLabel}<br>
     ${item.time}<br>
     ${item.location}<br>
     ${item.weather}
@@ -542,20 +576,70 @@ function renderLightboxFrame() {
     `${currentFlatIndex + 1} / ${FLAT.length}`;
   document.getElementById('lb-prev').disabled = (currentFlatIndex === 0);
   document.getElementById('lb-next').disabled = (currentFlatIndex === FLAT.length - 1);
+
+  // Order Print mailto link
+  const imgUrl  = item.src.startsWith('http') ? item.src : `${window.location.origin}${item.src}`;
+  const subject = encodeURIComponent(`Print Order Request — ${item.date} ${item.original || item.time}`);
+  const bodyLines = [
+    `Date: ${item.date}`,
+    `Time: ${item.time}`,
+    item.original ? `File: ${item.original}` : '',
+    `Image: ${imgUrl}`,
+  ].filter(Boolean).join('\n');
+  document.getElementById('lb-print').href = `mailto:info@boardshort-photography.com?subject=${subject}&body=${encodeURIComponent(bodyLines)}`;
 }
 
 // Keyboard navigation
 document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('lightbox').classList.contains('open')) closeLightbox();
+    else closeAbout();
+    return;
+  }
   if (!document.getElementById('lightbox').classList.contains('open')) return;
   if (e.key === 'ArrowLeft')  stepLightbox(-1);
   if (e.key === 'ArrowRight') stepLightbox(1);
-  if (e.key === 'Escape')     closeLightbox();
 });
 
 // Click backdrop to close
 document.getElementById('lightbox').addEventListener('click', function (e) {
   if (e.target === this) closeLightbox();
 });
+
+
+// ── ABOUT OVERLAY ────────────────────────────────────────────
+
+function openAbout(e) {
+  e.preventDefault();
+  document.getElementById('about-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAbout(e) {
+  // Called from: X button (no event), backdrop click (event), Escape key (no event)
+  if (e && e.target !== document.getElementById('about-overlay')) return;
+  document.getElementById('about-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+
+// ── LIGHTBOX MEDIA WRAP ──────────────────────────────────────
+// Moves lb-img, lb-video, and the watermark into a shared wrapper
+// so the watermark is positioned relative to the image bounds.
+
+function initLightboxWrap() {
+  const lbImg     = document.getElementById('lb-img');
+  const lbVideo   = document.getElementById('lb-video');
+  const watermark = document.querySelector('.lb-watermark');
+  const wrap      = document.createElement('div');
+  wrap.id         = 'lb-media-wrap';
+  lbImg.parentNode.insertBefore(wrap, lbImg);
+  wrap.appendChild(lbImg);
+  wrap.appendChild(lbVideo);
+  wrap.appendChild(watermark);
+}
+
+initLightboxWrap();
 
 
 // ── INIT ────────────────────────────────────────────────────
@@ -571,6 +655,7 @@ document.getElementById('lightbox').addEventListener('click', function (e) {
   FLAT = [];
   DAYS.forEach(day => day.images.forEach(img => FLAT.push(img)));
 
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
   initGrid();
   renderHero();
   renderTimeline();
