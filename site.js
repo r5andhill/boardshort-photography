@@ -580,12 +580,12 @@ function renderLightboxFrame() {
   // Order Print mailto link
   const imgUrl  = item.src.startsWith('http') ? item.src : `${window.location.origin}${item.src}`;
   const subject = encodeURIComponent(`Print Order Request — ${item.date} ${item.original || item.time}`);
-  const bodyLines = [
+  const details = [
     `Date: ${item.date}`,
-    `Time: ${item.time}`,
-    item.original ? `File: ${item.original}` : '',
+    item.original ? `File: ${item.original}` : null,
     `Image: ${imgUrl}`,
   ].filter(Boolean).join('\n');
+  const bodyLines = `Hi! I'm interested in ordering a digital print of this image. Please get back to me with an estimate.\n\n\n${details}`;
   document.getElementById('lb-print').href = `mailto:info@boardshort-photography.com?subject=${subject}&body=${encodeURIComponent(bodyLines)}`;
 }
 
