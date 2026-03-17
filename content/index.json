@@ -1,50 +1,5 @@
 [
   {
-    "date": "2026-03-16",
-    "location": "St. Pete Beach, FL",
-    "images": [
-      {
-        "src": "/static/uploads/img_2026-03-16_0742.jpeg",
-        "original": "IMG_3434",
-        "type": "image",
-        "orientation": "h",
-        "time": "07:42",
-        "date": "2026-03-16",
-        "caption": "",
-        "hero": "false",
-        "tag": "sunrise",
-        "weather": "67°F Windy",
-        "location": "St. Pete Beach, FL"
-      },
-      {
-        "src": "/static/uploads/img_2026-03-16_0745.jpeg",
-        "original": "IMG_3440",
-        "type": "image",
-        "orientation": "h",
-        "time": "07:45",
-        "date": "2026-03-16",
-        "caption": "",
-        "hero": "false",
-        "tag": "sunrise",
-        "weather": "67°F Windy",
-        "location": "St. Pete Beach, FL"
-      },
-      {
-        "src": "/static/uploads/img_2026-03-16_0756.jpeg",
-        "original": "IMG_3467",
-        "type": "image",
-        "orientation": "h",
-        "time": "07:56",
-        "date": "2026-03-16",
-        "caption": "",
-        "hero": "false",
-        "tag": "sunrise",
-        "weather": "67°F Windy",
-        "location": "St. Pete Beach, FL"
-      }
-    ]
-  },
-  {
     "date": "2026-03-15",
     "location": "St. Pete Beach, FL",
     "images": [
