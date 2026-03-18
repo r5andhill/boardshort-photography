@@ -84,11 +84,11 @@ function updateGapZones() {
     // If a cluster overflows the grid, scroll the strip so the gap zone stays visible.
     // Sunrise overflow → scroll right (early sunrise clips off left).
     // Sunset overflow  → leave at 0 (gap zone visible on left, late sunset clips off right).
-    const strip      = gz.parentElement;
-    const overflows  = (GRID_COLS - sr - ss) < 1;
+    const strip       = gz.parentElement;
+    const overflowCols = Math.max(0, sr + slots + ss - GRID_COLS);
     if (strip) {
-      strip.scrollLeft = (overflows && sr >= ss)
-        ? strip.scrollWidth - strip.clientWidth
+      strip.scrollLeft = (overflowCols > 0 && sr >= ss)
+        ? overflowCols * COL_W
         : 0;
     }
   });
