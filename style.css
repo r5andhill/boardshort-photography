@@ -256,31 +256,66 @@ header {
 }
 
 .gap-zone {
-  flex-grow:   var(--gap-grow,  1);
+  flex-grow: 1;
   flex-shrink: 0;
-  flex-basis:  var(--gap-basis, var(--thumb-w));
+  min-width: var(--thumb-w);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 0 4px;
+  padding: 0 8px;
 }
 
-.day-count {
-  font-family: var(--font-mono);
-  font-size: 0.5rem;
-  color: var(--ink-faint);
-  letter-spacing: 0.08em;
-  white-space: normal;
+/* Inner wrapper — column by default (1 slot: all stacked) */
+.gz-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
   text-align: center;
-  line-height: 1.7;
   pointer-events: none;
   user-select: none;
 }
 
-.dc-part {
-  display: inline-block;
+.gz-date {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
   white-space: nowrap;
+}
+
+/* Counts row — horizontal by default (2+ slots) */
+.gz-counts {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.gz-pill {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* 1 slot: stack the counts too */
+[data-slots="1"] .gz-counts {
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* 3+ slots: date and counts on the same line */
+[data-slots="3"] .gz-inner {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
+}
+[data-slots="3"] .gz-date::after {
+  content: ' ·';
+  opacity: 0.5;
 }
 
 
@@ -663,7 +698,7 @@ footer {
   .lb-meta                        { text-align: left; }
   .lb-controls                    { padding: 0 8px; }
   .lb-arrow                       { width: 38px; height: 38px; }
-  .day-count                      { font-size: 0.42rem; }
+  .gz-date, .gz-pill              { font-size: 0.42rem; }
 }
 
 

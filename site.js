@@ -64,11 +64,18 @@ function initGrid() {
   // No re-render — CSS variables update all thumbnails instantly
 }
 
+function updateGapSlots() {
+  const thumbW = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--thumb-w')) || 1;
+  document.querySelectorAll('.gap-zone').forEach(gz => {
+    const w = gz.offsetWidth;
+    gz.dataset.slots = w >= 3 * thumbW ? '3' : w >= 2 * thumbW ? '2' : '1';
+  });
+}
+
 let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(initGrid, 120);
-  // CSS variables update automatically — no DOM rebuild needed
+  resizeTimer = setTimeout(() => { initGrid(); requestAnimationFrame(updateGapSlots); }, 120);
 });
 
 
@@ -455,7 +462,7 @@ function renderTimeline() {
       leftCluster.className = 'cluster-sunrise';
       sunriseImgs.forEach(img => leftCluster.appendChild(makeThumb(img)));
 
-      // Gap zone — fixed-width info column between sunrise and sunset clusters
+      // Gap zone — responsive info column between sunrise and sunset clusters
       const gapZone  = document.createElement('div');
       gapZone.className = 'gap-zone';
       const srCount  = sunriseImgs.length;
@@ -464,22 +471,33 @@ function renderTimeline() {
       const shortDate = new Date(dy, dm - 1, dd)
         .toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
         .toUpperCase();
-      const nb    = '\u00A0';
-      const parts = [shortDate];
-      if (srCount && ssCount) {
-        parts.push(`${srCount}${nb}sunrise`);
-        parts.push(`${ssCount}${nb}sunset`);
-      } else if (srCount) {
-        parts.push(`${srCount}${nb}sunrise`);
-      } else {
-        parts.push(`${ssCount}${nb}sunset`);
+      const nb = '\u00A0';
+
+      const inner   = document.createElement('div');
+      inner.className = 'gz-inner';
+
+      const dateEl  = document.createElement('span');
+      dateEl.className = 'gz-date';
+      dateEl.textContent = shortDate;
+
+      const countsEl = document.createElement('div');
+      countsEl.className = 'gz-counts';
+      if (srCount) {
+        const p = document.createElement('span');
+        p.className = 'gz-pill';
+        p.textContent = `${srCount}${nb}sunrise`;
+        countsEl.appendChild(p);
       }
-      const countEl = document.createElement('span');
-      countEl.className = 'day-count';
-      countEl.innerHTML = parts
-        .map((p, i) => `<span class="dc-part">${p}${i < parts.length - 1 ? ' ·' : ''}</span>`)
-        .join(' ');
-      gapZone.appendChild(countEl);
+      if (ssCount) {
+        const p = document.createElement('span');
+        p.className = 'gz-pill';
+        p.textContent = `${ssCount}${nb}sunset`;
+        countsEl.appendChild(p);
+      }
+
+      inner.appendChild(dateEl);
+      inner.appendChild(countsEl);
+      gapZone.appendChild(inner);
 
       const rightCluster = document.createElement('div');
       rightCluster.className = 'cluster-sunset';
@@ -679,4 +697,5 @@ initLightboxWrap();
   initGrid();
   renderHero();
   renderTimeline();
+  requestAnimationFrame(updateGapSlots);
 })();
