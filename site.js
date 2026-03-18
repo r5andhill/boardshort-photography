@@ -80,15 +80,33 @@ function updateGapZones() {
     gz.style.flexBasis = `${slots * COL_W - THUMB_GAP}px`;
     gz.dataset.slots   = slots >= 3 ? '3' : slots >= 2 ? '2' : '1';
 
-    // If a cluster overflows the grid, scroll the strip so the gap zone stays visible.
-    // Sunrise overflow → scroll right (early sunrise clips off left).
-    // Sunset overflow  → leave at 0 (gap zone visible on left, late sunset clips off right).
-    const strip       = gz.parentElement;
-    const overflowCols = Math.max(0, sr + slots + ss - GRID_COLS);
-    if (strip) {
-      strip.scrollLeft = (overflowCols > 0 && sr >= ss)
-        ? overflowCols * COL_W
-        : 0;
+    const strip = gz.parentElement;
+    if (!strip) return;
+
+    const leftCluster  = strip.querySelector('.cluster-sunrise');
+    const rightCluster = strip.querySelector('.cluster-sunset');
+
+    // Reset any previous clipping
+    [leftCluster, rightCluster].forEach(c => {
+      if (c) { c.style.width = ''; c.style.flexShrink = ''; c.style.overflow = ''; c.style.justifyContent = ''; }
+    });
+
+    // Clip overflowing clusters in-place — no scrolling — so vertical grid alignment holds.
+    // Sunrise overflow: clip early photos on the left, show the most recent on the right.
+    // Sunset overflow: clip later photos on the right.
+    const srMax = Math.max(1, GRID_COLS - ss - 1);
+    const ssMax = Math.max(1, GRID_COLS - sr - 1);
+
+    if (leftCluster && sr > srMax) {
+      leftCluster.style.width          = `${srMax * COL_W - THUMB_GAP}px`;
+      leftCluster.style.flexShrink     = '0';
+      leftCluster.style.overflow       = 'hidden';
+      leftCluster.style.justifyContent = 'flex-end';
+    }
+    if (rightCluster && ss > ssMax) {
+      rightCluster.style.width         = `${ssMax * COL_W - THUMB_GAP}px`;
+      rightCluster.style.flexShrink    = '0';
+      rightCluster.style.overflow      = 'hidden';
     }
   });
 }
