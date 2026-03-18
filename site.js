@@ -544,14 +544,15 @@ function renderTimeline() {
       rightCluster.className = 'cluster-sunset';
       sunsetImgs.forEach(img => rightCluster.appendChild(makeThumb(img)));
 
+      // Filler sits between gap-zone and sunset — flex-grow pushes sunset flush to the right edge
+      const filler = document.createElement('div');
+      filler.className = 'strip-filler';
+
       // Only append non-empty clusters — empty ones create phantom gaps in the flex layout
       if (srCount > 0) strip.appendChild(leftCluster);
       strip.appendChild(gapZone);
-      if (ssCount > 0) strip.appendChild(rightCluster);
-      // Filler absorbs sub-column remainder so strip reaches full timeline width
-      const filler = document.createElement('div');
-      filler.className = 'strip-filler';
       strip.appendChild(filler);
+      if (ssCount > 0) strip.appendChild(rightCluster);
       weekEl.appendChild(strip);
     });
 
