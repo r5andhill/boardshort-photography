@@ -507,8 +507,16 @@ function makeThumb(img) {
     // Static poster thumbnail — fast on low bandwidth, no native play button issues
     el = Object.assign(document.createElement('img'), { alt: img.caption || '', loading: 'lazy' });
     el.src = img.thumb;
+  } else if (img.type === 'video' && window.innerWidth > 1024) {
+    // Desktop: live video with IntersectionObserver autoplay
+    el = Object.assign(document.createElement('video'), { muted: true, loop: true, playsInline: true });
+    el.src = img.src;
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { e.isIntersecting ? el.play().catch(() => {}) : el.pause(); });
+    }, { threshold: 0.1 });
+    obs.observe(el);
   } else if (img.type === 'video') {
-    // Placeholder div avoids iOS native play button; CSS ::after adds our triangle
+    // Mobile: placeholder div avoids iOS native play button; CSS ::after adds triangle
     el = document.createElement('div');
     el.className = 'video-placeholder';
   } else {
