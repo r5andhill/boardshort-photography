@@ -58,6 +58,9 @@ function initGrid() {
   document.documentElement.style.setProperty('--thumb-w',   `${thumbW}px`);
   document.documentElement.style.setProperty('--thumb-gap', `${THUMB_GAP}px`);
   document.documentElement.style.setProperty('--row-gap',   `${ROW_GAP}px`);
+  // Gap zone: fixed width at all sizes — sunset cluster handles right-alignment via margin-left:auto
+  document.documentElement.style.setProperty('--gap-grow',  '0');
+  document.documentElement.style.setProperty('--gap-basis', w > 1024 ? `${thumbW + 4}px` : `${thumbW}px`);
   // No re-render — CSS variables update all thumbnails instantly
 }
 
@@ -499,10 +502,25 @@ function makeThumb(img) {
   const wrap    = document.createElement('div');
   wrap.className = 'thumb-wrap' + (img.type === 'video' ? ' is-video' : '');
 
-  const el = img.type === 'video'
-    ? Object.assign(document.createElement('video'), { muted: true, loop: true, playsInline: true })
-    : Object.assign(document.createElement('img'),   { alt: img.caption || '', loading: 'lazy' });
-  el.src = img.src;
+  let el;
+  if (img.type === 'video' && img.thumb) {
+    // Static poster thumbnail — fast on low bandwidth, no native play button issues
+    el = Object.assign(document.createElement('img'), { alt: img.caption || '', loading: 'lazy' });
+    el.src = img.thumb;
+  } else if (img.type === 'video') {
+    // Fallback: live video element until thumb is available
+    el = Object.assign(document.createElement('video'), { muted: true, loop: true, playsInline: true });
+    el.src = img.src;
+    // Transparent poster suppresses iOS native play button overlay
+    el.poster = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { e.isIntersecting ? el.play().catch(() => {}) : el.pause(); });
+    }, { threshold: 0.1 });
+    obs.observe(el);
+  } else {
+    el = Object.assign(document.createElement('img'), { alt: img.caption || '', loading: 'lazy' });
+    el.src = img.src;
+  }
 
   const tag = document.createElement('div');
   tag.className = `thumb-tag ${img.tag}`;
