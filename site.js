@@ -32,6 +32,9 @@ const THUMB_H_SM    = 40;   // px — mobile row height
 const THUMB_GAP     = 2;    // px — gap between thumbnails within a row
 const ROW_GAP       = 4;    // px — gap between rows
 
+let GRID_COLS = 0;  // computed by initGrid(), used by updateGapZones()
+let COL_W     = 0;  // thumbW + THUMB_GAP
+
 
 // ── LOCATION & WEATHER CONFIG ───────────────────────────────
 
@@ -53,29 +56,37 @@ function initGrid() {
   const w      = window.innerWidth;
   const thumbH = w > 1024 ? THUMB_H : w > 599 ? THUMB_H_MD : THUMB_H_SM;
   const thumbW = Math.round(thumbH * (4 / 3));
+  const colW   = thumbW + THUMB_GAP;
+  const padH   = w > 1023 ? 48 : w > 599 ? 24 : 16;  // timeline padding per side
+  const availW = w - 2 * padH;
+
+  GRID_COLS = Math.floor((availW + THUMB_GAP) / colW);
+  COL_W     = colW;
 
   document.documentElement.style.setProperty('--thumb-h',   `${thumbH}px`);
   document.documentElement.style.setProperty('--thumb-w',   `${thumbW}px`);
   document.documentElement.style.setProperty('--thumb-gap', `${THUMB_GAP}px`);
   document.documentElement.style.setProperty('--row-gap',   `${ROW_GAP}px`);
-  // Gap zone: fixed width at all sizes — sunset cluster handles right-alignment via margin-left:auto
-  document.documentElement.style.setProperty('--gap-grow',  '0');
-  document.documentElement.style.setProperty('--gap-basis', w > 1024 ? `${thumbW + 4}px` : `${thumbW}px`);
-  // No re-render — CSS variables update all thumbnails instantly
+
+  // Update gap zone widths if timeline is already rendered
+  updateGapZones();
 }
 
-function updateGapSlots() {
-  const thumbW = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--thumb-w')) || 1;
+function updateGapZones() {
+  if (!GRID_COLS || !COL_W) return;
   document.querySelectorAll('.gap-zone').forEach(gz => {
-    const w = gz.offsetWidth;
-    gz.dataset.slots = w >= 3 * thumbW ? '3' : w >= 2 * thumbW ? '2' : '1';
+    const sr    = parseInt(gz.dataset.sr || 0);
+    const ss    = parseInt(gz.dataset.ss || 0);
+    const slots = Math.max(1, GRID_COLS - sr - ss);
+    gz.style.flexBasis = `${slots * COL_W - THUMB_GAP}px`;
+    gz.dataset.slots   = slots >= 3 ? '3' : slots >= 2 ? '2' : '1';
   });
 }
 
 let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => { initGrid(); requestAnimationFrame(updateGapSlots); }, 120);
+  resizeTimer = setTimeout(initGrid, 120);
 });
 
 
@@ -498,14 +509,17 @@ function renderTimeline() {
       inner.appendChild(dateEl);
       inner.appendChild(countsEl);
       gapZone.appendChild(inner);
+      gapZone.dataset.sr = srCount;
+      gapZone.dataset.ss = ssCount;
 
       const rightCluster = document.createElement('div');
       rightCluster.className = 'cluster-sunset';
       sunsetImgs.forEach(img => rightCluster.appendChild(makeThumb(img)));
 
-      strip.appendChild(leftCluster);
+      // Only append non-empty clusters — empty ones create phantom gaps in the flex layout
+      if (srCount > 0) strip.appendChild(leftCluster);
       strip.appendChild(gapZone);
-      strip.appendChild(rightCluster);
+      if (ssCount > 0) strip.appendChild(rightCluster);
       weekEl.appendChild(strip);
     });
 
@@ -697,5 +711,5 @@ initLightboxWrap();
   initGrid();
   renderHero();
   renderTimeline();
-  requestAnimationFrame(updateGapSlots);
+  requestAnimationFrame(updateGapZones);
 })();

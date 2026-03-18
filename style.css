@@ -235,6 +235,7 @@ header {
   overflow-y: hidden;
   flex-wrap: nowrap;
   scrollbar-width: none;
+  gap: var(--thumb-gap);
 }
 .contact-strip::-webkit-scrollbar { display: none; }
 
@@ -252,12 +253,10 @@ header {
   flex-shrink: 0;
   flex-wrap: nowrap;
   gap: 2px;
-  margin-left: auto;
 }
 
 .gap-zone {
-  flex-grow: 1;
-  flex-shrink: 0;
+  flex: 0 0 auto;        /* width set by JS via flex-basis inline style */
   min-width: var(--thumb-w);
   display: flex;
   align-items: center;
