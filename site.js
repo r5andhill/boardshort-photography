@@ -509,10 +509,9 @@ function makeThumb(img) {
     el.src = img.thumb;
   } else if (img.type === 'video') {
     // Fallback: live video element until thumb is available
-    el = Object.assign(document.createElement('video'), { muted: true, loop: true, playsInline: true });
+    // muted + playsinline + autoplay = iOS Safari autoplays without native button
+    el = Object.assign(document.createElement('video'), { muted: true, loop: true, playsInline: true, autoplay: true });
     el.src = img.src;
-    // Transparent poster suppresses iOS native play button overlay
-    el.poster = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { e.isIntersecting ? el.play().catch(() => {}) : el.pause(); });
     }, { threshold: 0.1 });
