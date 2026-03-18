@@ -256,8 +256,9 @@ header {
 }
 
 .gap-zone {
-  flex: 1;
-  min-width: var(--thumb-w);
+  flex-grow:   var(--gap-grow,  1);
+  flex-shrink: 0;
+  flex-basis:  var(--gap-basis, var(--thumb-w));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -317,6 +318,15 @@ header {
 .thumb-wrap:hover video {
   opacity: 0.82;
   transform: scaleY(1.03);
+}
+
+/* Suppress iOS native video play button overlay */
+.thumb-wrap video::-webkit-media-controls,
+.thumb-wrap video::-webkit-media-controls-overlay-play-button,
+.thumb-wrap video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /* Video play badge */
@@ -635,6 +645,7 @@ footer {
 
 /* iPhone */
 @media (max-width: 599px) {
+  .hero                           { height: 75vw; }
   header                          { padding: 22px 16px 16px; flex-direction: column; gap: 4px; }
   .timeline, footer               { padding-left: 16px; padding-right: 16px; }
   .hero-meta                      { padding-left: 16px; padding-right: 16px; }
