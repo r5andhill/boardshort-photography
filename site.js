@@ -72,14 +72,8 @@ function initGrid() {
 }
 
 function updateGapZones() {
-  if (!GRID_COLS || !COL_W) return;
+  const thumbW = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--thumb-w')) || 1;
   document.querySelectorAll('.gap-zone').forEach(gz => {
-    const sr    = parseInt(gz.dataset.sr || 0);
-    const ss    = parseInt(gz.dataset.ss || 0);
-    const slots = Math.max(1, GRID_COLS - sr - ss);
-    gz.style.flexBasis = `${slots * COL_W - THUMB_GAP}px`;
-    gz.dataset.slots   = slots >= 3 ? '3' : slots >= 2 ? '2' : '1';
-
     const strip = gz.parentElement;
     if (!strip) return;
 
@@ -91,23 +85,29 @@ function updateGapZones() {
       if (c) { c.style.width = ''; c.style.flexShrink = ''; c.style.overflow = ''; c.style.justifyContent = ''; }
     });
 
-    // Clip overflowing clusters in-place — no scrolling — so vertical grid alignment holds.
-    // Sunrise overflow: clip early photos on the left, show the most recent on the right.
-    // Sunset overflow: clip later photos on the right.
-    const srMax = Math.max(1, GRID_COLS - ss - 1);
-    const ssMax = Math.max(1, GRID_COLS - sr - 1);
+    // Clip overflowing clusters so gap zone stays visible at minimum 1 slot wide
+    if (GRID_COLS && COL_W) {
+      const sr    = parseInt(gz.dataset.sr || 0);
+      const ss    = parseInt(gz.dataset.ss || 0);
+      const srMax = Math.max(1, GRID_COLS - ss - 1);
+      const ssMax = Math.max(1, GRID_COLS - sr - 1);
 
-    if (leftCluster && sr > srMax) {
-      leftCluster.style.width          = `${srMax * COL_W - THUMB_GAP}px`;
-      leftCluster.style.flexShrink     = '0';
-      leftCluster.style.overflow       = 'hidden';
-      leftCluster.style.justifyContent = 'flex-end';
+      if (leftCluster && sr > srMax) {
+        leftCluster.style.width          = `${srMax * COL_W - THUMB_GAP}px`;
+        leftCluster.style.flexShrink     = '0';
+        leftCluster.style.overflow       = 'hidden';
+        leftCluster.style.justifyContent = 'flex-end';
+      }
+      if (rightCluster && ss > ssMax) {
+        rightCluster.style.width         = `${ssMax * COL_W - THUMB_GAP}px`;
+        rightCluster.style.flexShrink    = '0';
+        rightCluster.style.overflow      = 'hidden';
+      }
     }
-    if (rightCluster && ss > ssMax) {
-      rightCluster.style.width         = `${ssMax * COL_W - THUMB_GAP}px`;
-      rightCluster.style.flexShrink    = '0';
-      rightCluster.style.overflow      = 'hidden';
-    }
+
+    // Measure after clipping is applied (offsetWidth read forces reflow)
+    const w = gz.offsetWidth;
+    gz.dataset.slots = w >= 3 * thumbW ? '3' : w >= 2 * thumbW ? '2' : '1';
   });
 }
 
@@ -544,14 +544,9 @@ function renderTimeline() {
       rightCluster.className = 'cluster-sunset';
       sunsetImgs.forEach(img => rightCluster.appendChild(makeThumb(img)));
 
-      // Filler sits between gap-zone and sunset — flex-grow pushes sunset flush to the right edge
-      const filler = document.createElement('div');
-      filler.className = 'strip-filler';
-
       // Only append non-empty clusters — empty ones create phantom gaps in the flex layout
       if (srCount > 0) strip.appendChild(leftCluster);
       strip.appendChild(gapZone);
-      strip.appendChild(filler);
       if (ssCount > 0) strip.appendChild(rightCluster);
       weekEl.appendChild(strip);
     });

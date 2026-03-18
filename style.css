@@ -256,7 +256,8 @@ header {
 }
 
 .gap-zone {
-  flex: 0 0 auto;        /* width set by JS via flex-basis inline style */
+  flex-grow: 1;
+  flex-shrink: 0;
   min-width: var(--thumb-w);
   display: flex;
   align-items: center;
@@ -356,7 +357,6 @@ header {
 }
 
 .video-placeholder { background: #1a1814; }
-.strip-filler { flex-grow: 1; flex-shrink: 0; }
 
 /* Suppress iOS native video play button overlay */
 .thumb-wrap video::-webkit-media-controls,
