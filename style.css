@@ -228,7 +228,7 @@ header {
 .contact-strip {
   display: flex;
   align-items: stretch;
-  width: 100%;
+  width: var(--strip-w, 100%);
   height: var(--thumb-h);
   margin-bottom: 4px;
   overflow-x: auto;
