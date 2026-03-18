@@ -62,13 +62,10 @@ function initGrid() {
 
   GRID_COLS = Math.floor((availW + THUMB_GAP) / colW);
   COL_W     = colW;
-  const stripW = GRID_COLS * colW - THUMB_GAP;
-
   document.documentElement.style.setProperty('--thumb-h',   `${thumbH}px`);
   document.documentElement.style.setProperty('--thumb-w',   `${thumbW}px`);
   document.documentElement.style.setProperty('--thumb-gap', `${THUMB_GAP}px`);
   document.documentElement.style.setProperty('--row-gap',   `${ROW_GAP}px`);
-  document.documentElement.style.setProperty('--strip-w',   `${stripW}px`);
 
   // Update gap zone widths if timeline is already rendered
   updateGapZones();
@@ -533,6 +530,10 @@ function renderTimeline() {
       if (srCount > 0) strip.appendChild(leftCluster);
       strip.appendChild(gapZone);
       if (ssCount > 0) strip.appendChild(rightCluster);
+      // Filler absorbs sub-column remainder so strip reaches full timeline width
+      const filler = document.createElement('div');
+      filler.className = 'strip-filler';
+      strip.appendChild(filler);
       weekEl.appendChild(strip);
     });
 

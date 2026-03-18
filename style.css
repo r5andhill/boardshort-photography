@@ -228,7 +228,7 @@ header {
 .contact-strip {
   display: flex;
   align-items: stretch;
-  width: var(--strip-w, 100%);
+  width: 100%;
   height: var(--thumb-h);
   margin-bottom: 4px;
   overflow-x: auto;
@@ -356,6 +356,7 @@ header {
 }
 
 .video-placeholder { background: #1a1814; }
+.strip-filler { flex-grow: 1; flex-shrink: 0; }
 
 /* Suppress iOS native video play button overlay */
 .thumb-wrap video::-webkit-media-controls,
