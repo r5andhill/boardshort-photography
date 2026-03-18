@@ -302,7 +302,8 @@ header {
 }
 
 .thumb-wrap img,
-.thumb-wrap video {
+.thumb-wrap video,
+.thumb-wrap .video-placeholder {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -319,6 +320,8 @@ header {
   opacity: 0.82;
   transform: scaleY(1.03);
 }
+
+.video-placeholder { background: #1a1814; }
 
 /* Suppress iOS native video play button overlay */
 .thumb-wrap video::-webkit-media-controls,

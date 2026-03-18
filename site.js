@@ -508,14 +508,9 @@ function makeThumb(img) {
     el = Object.assign(document.createElement('img'), { alt: img.caption || '', loading: 'lazy' });
     el.src = img.thumb;
   } else if (img.type === 'video') {
-    // Fallback: live video element until thumb is available
-    // muted + playsinline + autoplay = iOS Safari autoplays without native button
-    el = Object.assign(document.createElement('video'), { muted: true, loop: true, playsInline: true, autoplay: true });
-    el.src = img.src;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { e.isIntersecting ? el.play().catch(() => {}) : el.pause(); });
-    }, { threshold: 0.1 });
-    obs.observe(el);
+    // Placeholder div avoids iOS native play button; CSS ::after adds our triangle
+    el = document.createElement('div');
+    el.className = 'video-placeholder';
   } else {
     el = Object.assign(document.createElement('img'), { alt: img.caption || '', loading: 'lazy' });
     el.src = img.src;
