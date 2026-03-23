@@ -2,4 +2,5 @@ hero.html
 editor.html
 dev.js
 RELEASE_NOTES.md
+.env
 .DS_Store
