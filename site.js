@@ -4,9 +4,8 @@
 //
 // QUICK REFERENCE — things you'll want to tune:
 //
-//   TOTAL_SLOTS   → number of grid slots per row (default 40)
-//   THUMB_H       → thumbnail row height on desktop in px
-//   THUMB_H_SM    → thumbnail row height on mobile in px
+//   COLS_MOBILE / COLS_TAB_PORT / COLS_TAB_LAND / COLS_DESKTOP
+//               → column count per breakpoint (thumbW fills availW exactly)
 //   DEFAULT_LAT/LNG → your home shooting location
 //   WEATHER_API_KEY → set in Netlify environment variables
 //
@@ -14,23 +13,27 @@
 
 
 // ── GRID CONFIG ─────────────────────────────────────────────
-// TOTAL_SLOTS controls how many equal slots each row is divided into.
-// The grid scales down on smaller screens so thumbnails stay visible.
-//
-//   Desktop  (> 1024px) → SLOTS_DESKTOP  slots  (default 40)
-//   Tablet   (600–1024) → SLOTS_TABLET   slots  (default 20)
-//   Mobile   (< 600px)  → SLOTS_MOBILE   slots  (default 10)
-//
-// The gap between sunrise and sunset scales with the same ratio,
-// so the visual proportion of the layout is preserved across devices.
-//
-// THUMB_H: fixed height of every thumbnail row, in pixels.
+// Fixed column targets — one constant per breakpoint, easy to adjust.
+// thumbW is derived from availW / GRID_COLS so it fills exactly.
 
-const THUMB_H       = 72;   // px — desktop row height (width = H × 4/3)
-const THUMB_H_MD    = 58;   // px — tablet row height
-const THUMB_H_SM    = 40;   // px — mobile row height
+const COLS_MOBILE   = 7;   // < 600px
+const COLS_TAB_PORT = 9;   // 600–1023px portrait
+const COLS_TAB_LAND = 11;  // 600–1023px landscape
+const COLS_DESKTOP  = 13;  // > 1023px
+
 const THUMB_GAP     = 2;    // px — gap between thumbnails within a row
 const ROW_GAP       = 4;    // px — gap between rows
+
+let GRID_COLS = 0;  // computed by initGrid(), used by updateGapZones()
+let COL_W     = 0;  // thumbW + THUMB_GAP
+
+function getGridCols() {
+  const w = window.innerWidth;
+  if (w < 600)   return COLS_MOBILE;
+  if (w <= 1023) return window.matchMedia('(orientation: portrait)').matches
+                   ? COLS_TAB_PORT : COLS_TAB_LAND;
+  return COLS_DESKTOP;
+}
 
 
 // ── LOCATION & WEATHER CONFIG ───────────────────────────────
@@ -51,22 +54,74 @@ const WEATHER_API_KEY = window.__WEATHER_KEY__ || '';
 
 function initGrid() {
   const w      = window.innerWidth;
-  const thumbH = w > 1024 ? THUMB_H : w > 599 ? THUMB_H_MD : THUMB_H_SM;
-  const thumbW = Math.round(thumbH * (4 / 3));
+  const padH   = w > 1023 ? 48 : w > 599 ? 24 : 16;
+  const availW = w - 2 * padH;
+
+  GRID_COLS    = getGridCols();
+  const thumbW = (availW - (GRID_COLS - 1) * THUMB_GAP) / GRID_COLS;
+  const thumbH = thumbW * 3 / 4;
+  COL_W        = thumbW + THUMB_GAP;
 
   document.documentElement.style.setProperty('--thumb-h',   `${thumbH}px`);
   document.documentElement.style.setProperty('--thumb-w',   `${thumbW}px`);
   document.documentElement.style.setProperty('--thumb-gap', `${THUMB_GAP}px`);
   document.documentElement.style.setProperty('--row-gap',   `${ROW_GAP}px`);
-  // No re-render — CSS variables update all thumbnails instantly
+
+  const timelineEl = document.getElementById('timeline');
+  if (timelineEl) timelineEl.style.paddingRight = '';
+
+  updateGapZones();
+}
+
+function calcCols(sr, ss) {
+  const availCols = GRID_COLS - 1;               // 1 col always reserved for gap
+  const half      = Math.floor(availCols / 2);   // max columns per side (symmetric)
+
+  const sunriseCols_ideal = Math.min(sr, half);
+  const sunsetCols        = Math.min(ss, availCols - sunriseCols_ideal);
+  const sunriseCols       = Math.min(sr, availCols - sunsetCols);
+  const gapCols           = GRID_COLS - sunriseCols - sunsetCols;
+
+  return { sunriseCols, sunsetCols, gapCols };
+}
+
+function initScrollPosition(strip) {
+  const left  = strip.querySelector('.cluster-sunrise');
+  const right = strip.querySelector('.cluster-sunset');
+  if (left)  left.scrollLeft  = 0;
+  if (right) right.scrollLeft = 0;
+}
+
+function updateGapZones() {
+  document.querySelectorAll('.gap-zone').forEach(gz => {
+    const strip = gz.parentElement;
+    if (!strip) return;
+
+    const sr = parseInt(gz.dataset.sr || 0);
+    const ss = parseInt(gz.dataset.ss || 0);
+    const { sunriseCols, sunsetCols, gapCols } = calcCols(sr, ss);
+
+    const leftCluster  = strip.querySelector('.cluster-sunrise');
+    const rightCluster = strip.querySelector('.cluster-sunset');
+
+    if (leftCluster)  leftCluster.style.width = `${sunriseCols * COL_W - THUMB_GAP}px`;
+    gz.style.width    = `${gapCols * COL_W - THUMB_GAP}px`;
+    gz.style.flexGrow = '0';
+    if (rightCluster) rightCluster.style.width = `${sunsetCols * COL_W - THUMB_GAP}px`;
+
+    gz.dataset.slots = gapCols >= 3 ? '3' : gapCols >= 2 ? '2' : '1';
+
+    initScrollPosition(strip);
+  });
 }
 
 let resizeTimer;
-window.addEventListener('resize', () => {
+function onResize() {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(initGrid, 120);
-  // CSS variables update automatically — no DOM rebuild needed
-});
+}
+window.addEventListener('resize', onResize);
+window.addEventListener('orientationchange', onResize);
 
 
 // ── SOLAR NOON ──────────────────────────────────────────────
@@ -452,7 +507,7 @@ function renderTimeline() {
       leftCluster.className = 'cluster-sunrise';
       sunriseImgs.forEach(img => leftCluster.appendChild(makeThumb(img)));
 
-      // Gap zone — fixed-width info column between sunrise and sunset clusters
+      // Gap zone — responsive info column between sunrise and sunset clusters
       const gapZone  = document.createElement('div');
       gapZone.className = 'gap-zone';
       const srCount  = sunriseImgs.length;
@@ -461,30 +516,44 @@ function renderTimeline() {
       const shortDate = new Date(dy, dm - 1, dd)
         .toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
         .toUpperCase();
-      const nb    = '\u00A0';
-      const parts = [shortDate];
-      if (srCount && ssCount) {
-        parts.push(`${srCount}${nb}sunrise`);
-        parts.push(`${ssCount}${nb}sunset`);
-      } else if (srCount) {
-        parts.push(`${srCount}${nb}sunrise`);
-      } else {
-        parts.push(`${ssCount}${nb}sunset`);
+      const nb = '\u00A0';
+
+      const inner   = document.createElement('div');
+      inner.className = 'gz-inner';
+
+      const dateEl  = document.createElement('span');
+      dateEl.className = 'gz-date';
+      dateEl.textContent = shortDate;
+
+      const countsEl = document.createElement('div');
+      countsEl.className = 'gz-counts';
+      if (srCount) {
+        const p = document.createElement('span');
+        p.className = 'gz-pill';
+        p.textContent = `${srCount}${nb}sunrise`;
+        countsEl.appendChild(p);
       }
-      const countEl = document.createElement('span');
-      countEl.className = 'day-count';
-      countEl.innerHTML = parts
-        .map((p, i) => `<span class="dc-part">${p}${i < parts.length - 1 ? ' ·' : ''}</span>`)
-        .join(' ');
-      gapZone.appendChild(countEl);
+      if (ssCount) {
+        const p = document.createElement('span');
+        p.className = 'gz-pill';
+        p.textContent = `${ssCount}${nb}sunset`;
+        countsEl.appendChild(p);
+      }
+
+      inner.appendChild(dateEl);
+      inner.appendChild(countsEl);
+      gapZone.appendChild(inner);
+      gapZone.dataset.sr = srCount;
+      gapZone.dataset.ss = ssCount;
 
       const rightCluster = document.createElement('div');
       rightCluster.className = 'cluster-sunset';
       sunsetImgs.forEach(img => rightCluster.appendChild(makeThumb(img)));
 
-      strip.appendChild(leftCluster);
+      // Only append non-empty clusters — empty ones create phantom gaps in the flex layout
+      if (srCount > 0) strip.appendChild(leftCluster);
       strip.appendChild(gapZone);
-      strip.appendChild(rightCluster);
+      if (ssCount > 0) strip.appendChild(rightCluster);
       weekEl.appendChild(strip);
     });
 
@@ -499,10 +568,27 @@ function makeThumb(img) {
   const wrap    = document.createElement('div');
   wrap.className = 'thumb-wrap' + (img.type === 'video' ? ' is-video' : '');
 
-  const el = img.type === 'video'
-    ? Object.assign(document.createElement('video'), { muted: true, loop: true, playsInline: true })
-    : Object.assign(document.createElement('img'),   { alt: img.caption || '', loading: 'lazy' });
-  el.src = img.src;
+  let el;
+  if (img.type === 'video' && img.thumb) {
+    // Static poster thumbnail — fast on low bandwidth, no native play button issues
+    el = Object.assign(document.createElement('img'), { alt: img.caption || '', loading: 'lazy' });
+    el.src = img.thumb;
+  } else if (img.type === 'video' && window.innerWidth > 1024) {
+    // Desktop: live video with IntersectionObserver autoplay
+    el = Object.assign(document.createElement('video'), { muted: true, loop: true, playsInline: true });
+    el.src = img.src;
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { e.isIntersecting ? el.play().catch(() => {}) : el.pause(); });
+    }, { threshold: 0.1 });
+    obs.observe(el);
+  } else if (img.type === 'video') {
+    // Mobile: placeholder div avoids iOS native play button; CSS ::after adds triangle
+    el = document.createElement('div');
+    el.className = 'video-placeholder';
+  } else {
+    el = Object.assign(document.createElement('img'), { alt: img.caption || '', loading: 'lazy' });
+    el.src = img.src;
+  }
 
   const tag = document.createElement('div');
   tag.className = `thumb-tag ${img.tag}`;
@@ -580,12 +666,12 @@ function renderLightboxFrame() {
   // Order Print mailto link
   const imgUrl  = item.src.startsWith('http') ? item.src : `${window.location.origin}${item.src}`;
   const subject = encodeURIComponent(`Print Order Request — ${item.date} ${item.original || item.time}`);
-  const bodyLines = [
+  const details = [
     `Date: ${item.date}`,
-    `Time: ${item.time}`,
-    item.original ? `File: ${item.original}` : '',
+    item.original ? `File: ${item.original}` : null,
     `Image: ${imgUrl}`,
   ].filter(Boolean).join('\n');
+  const bodyLines = `Hi! I'm interested in ordering a digital print of this image. Please get back to me with an estimate.\n\n\n${details}`;
   document.getElementById('lb-print').href = `mailto:info@boardshort-photography.com?subject=${subject}&body=${encodeURIComponent(bodyLines)}`;
 }
 
@@ -659,4 +745,5 @@ initLightboxWrap();
   initGrid();
   renderHero();
   renderTimeline();
+  requestAnimationFrame(updateGapZones);
 })();

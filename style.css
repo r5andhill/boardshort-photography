@@ -231,55 +231,87 @@ header {
   width: 100%;
   height: var(--thumb-h);
   margin-bottom: 4px;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
   flex-wrap: nowrap;
-  scrollbar-width: none;
-}
-.contact-strip::-webkit-scrollbar { display: none; }
-
-.cluster-sunrise {
-  display: flex;
-  align-items: stretch;
-  flex-shrink: 0;
-  flex-wrap: nowrap;
-  gap: 2px;
+  gap: var(--thumb-gap);
 }
 
+.cluster-sunrise,
 .cluster-sunset {
   display: flex;
   align-items: stretch;
   flex-shrink: 0;
   flex-wrap: nowrap;
-  gap: 2px;
-  margin-left: auto;
+  gap: var(--thumb-gap);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
 }
+.cluster-sunrise::-webkit-scrollbar,
+.cluster-sunset::-webkit-scrollbar  { display: none; }
 
 .gap-zone {
-  flex: 1;
+  flex-grow: 0;
+  flex-shrink: 0;
   min-width: var(--thumb-w);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 0 4px;
+  padding: 0 8px;
 }
 
-.day-count {
-  font-family: var(--font-mono);
-  font-size: 0.5rem;
-  color: var(--ink-faint);
-  letter-spacing: 0.08em;
-  white-space: normal;
+/* Inner wrapper — column by default (1 slot: all stacked) */
+.gz-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
   text-align: center;
-  line-height: 1.7;
   pointer-events: none;
   user-select: none;
 }
 
-.dc-part {
-  display: inline-block;
+.gz-date {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
   white-space: nowrap;
+}
+
+/* Counts row — horizontal by default (2+ slots) */
+.gz-counts {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.gz-pill {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* 1 slot: stack the counts too */
+[data-slots="1"] .gz-counts {
+  flex-direction: column;
+  gap: var(--thumb-gap);
+}
+
+/* 3+ slots: date and counts on the same line */
+[data-slots="3"] .gz-inner {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
+}
+[data-slots="3"] .gz-date::after {
+  content: ' ·';
+  opacity: 0.5;
 }
 
 
@@ -298,10 +330,12 @@ header {
   flex-shrink: 0;
   cursor: pointer;
   overflow: hidden;
+  background: #1a1814;
 }
 
 .thumb-wrap img,
-.thumb-wrap video {
+.thumb-wrap video,
+.thumb-wrap .video-placeholder {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -319,19 +353,32 @@ header {
   transform: scaleY(1.03);
 }
 
-/* Video play badge */
+.video-placeholder { background: #1a1814; }
+
+/* Suppress iOS native video play button overlay */
+.thumb-wrap video::-webkit-media-controls,
+.thumb-wrap video::-webkit-media-controls-overlay-play-button,
+.thumb-wrap video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Video play badge — CSS border triangle, identical on all platforms */
 .thumb-wrap.is-video::after {
-  content: '▶';
+  content: '';
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  color: #fff;
-  opacity: 0.85;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  top: 50%;
+  left: 50%;
+  transform: translate(-38%, -50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 11px 0 11px 18px;
+  border-color: transparent transparent transparent rgba(255,255,255,0.88);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.55));
   pointer-events: none;
+  z-index: 1;
 }
 
 /* Wraps lb-img and lb-video — watermark is positioned inside image bounds */
@@ -635,6 +682,7 @@ footer {
 
 /* iPhone */
 @media (max-width: 599px) {
+  .hero                           { height: 75vw; }
   header                          { padding: 22px 16px 16px; flex-direction: column; gap: 4px; }
   .timeline, footer               { padding-left: 16px; padding-right: 16px; }
   .hero-meta                      { padding-left: 16px; padding-right: 16px; }
@@ -647,7 +695,7 @@ footer {
   .lb-meta                        { text-align: left; }
   .lb-controls                    { padding: 0 8px; }
   .lb-arrow                       { width: 38px; height: 38px; }
-  .day-count                      { font-size: 0.42rem; }
+  .gz-date, .gz-pill              { font-size: 0.42rem; }
 }
 
 
