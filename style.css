@@ -231,32 +231,28 @@ header {
   width: 100%;
   height: var(--thumb-h);
   margin-bottom: 4px;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
   flex-wrap: nowrap;
-  scrollbar-width: none;
   gap: var(--thumb-gap);
 }
-.contact-strip::-webkit-scrollbar { display: none; }
 
-.cluster-sunrise {
-  display: flex;
-  align-items: stretch;
-  flex-shrink: 0;
-  flex-wrap: nowrap;
-  gap: 2px;
-}
-
+.cluster-sunrise,
 .cluster-sunset {
   display: flex;
   align-items: stretch;
   flex-shrink: 0;
   flex-wrap: nowrap;
-  gap: 2px;
+  gap: var(--thumb-gap);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
 }
+.cluster-sunrise::-webkit-scrollbar,
+.cluster-sunset::-webkit-scrollbar  { display: none; }
 
 .gap-zone {
-  flex-grow: 1;
+  flex-grow: 0;
   flex-shrink: 0;
   min-width: var(--thumb-w);
   display: flex;
@@ -304,7 +300,7 @@ header {
 /* 1 slot: stack the counts too */
 [data-slots="1"] .gz-counts {
   flex-direction: column;
-  gap: 2px;
+  gap: var(--thumb-gap);
 }
 
 /* 3+ slots: date and counts on the same line */
@@ -334,6 +330,7 @@ header {
   flex-shrink: 0;
   cursor: pointer;
   overflow: hidden;
+  background: #1a1814;
 }
 
 .thumb-wrap img,

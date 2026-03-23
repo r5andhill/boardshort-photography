@@ -4,9 +4,8 @@
 //
 // QUICK REFERENCE — things you'll want to tune:
 //
-//   TOTAL_SLOTS   → number of grid slots per row (default 40)
-//   THUMB_H       → thumbnail row height on desktop in px
-//   THUMB_H_SM    → thumbnail row height on mobile in px
+//   COLS_MOBILE / COLS_TAB_PORT / COLS_TAB_LAND / COLS_DESKTOP
+//               → column count per breakpoint (thumbW fills availW exactly)
 //   DEFAULT_LAT/LNG → your home shooting location
 //   WEATHER_API_KEY → set in Netlify environment variables
 //
@@ -14,26 +13,27 @@
 
 
 // ── GRID CONFIG ─────────────────────────────────────────────
-// TOTAL_SLOTS controls how many equal slots each row is divided into.
-// The grid scales down on smaller screens so thumbnails stay visible.
-//
-//   Desktop  (> 1024px) → SLOTS_DESKTOP  slots  (default 40)
-//   Tablet   (600–1024) → SLOTS_TABLET   slots  (default 20)
-//   Mobile   (< 600px)  → SLOTS_MOBILE   slots  (default 10)
-//
-// The gap between sunrise and sunset scales with the same ratio,
-// so the visual proportion of the layout is preserved across devices.
-//
-// THUMB_H: fixed height of every thumbnail row, in pixels.
+// Fixed column targets — one constant per breakpoint, easy to adjust.
+// thumbW is derived from availW / GRID_COLS so it fills exactly.
 
-const THUMB_H       = 72;   // px — desktop row height (width = H × 4/3)
-const THUMB_H_MD    = 58;   // px — tablet row height
-const THUMB_H_SM    = 40;   // px — mobile row height
+const COLS_MOBILE   = 7;   // < 600px
+const COLS_TAB_PORT = 9;   // 600–1023px portrait
+const COLS_TAB_LAND = 11;  // 600–1023px landscape
+const COLS_DESKTOP  = 13;  // > 1023px
+
 const THUMB_GAP     = 2;    // px — gap between thumbnails within a row
 const ROW_GAP       = 4;    // px — gap between rows
 
 let GRID_COLS = 0;  // computed by initGrid(), used by updateGapZones()
 let COL_W     = 0;  // thumbW + THUMB_GAP
+
+function getGridCols() {
+  const w = window.innerWidth;
+  if (w < 600)   return COLS_MOBILE;
+  if (w <= 1023) return window.matchMedia('(orientation: portrait)').matches
+                   ? COLS_TAB_PORT : COLS_TAB_LAND;
+  return COLS_DESKTOP;
+}
 
 
 // ── LOCATION & WEATHER CONFIG ───────────────────────────────
@@ -54,68 +54,74 @@ const WEATHER_API_KEY = window.__WEATHER_KEY__ || '';
 
 function initGrid() {
   const w      = window.innerWidth;
-  const thumbH = w > 1024 ? THUMB_H : w > 599 ? THUMB_H_MD : THUMB_H_SM;
-  const thumbW = Math.round(thumbH * (4 / 3));
-  const colW   = thumbW + THUMB_GAP;
-  const padH   = w > 1023 ? 48 : w > 599 ? 24 : 16;  // timeline padding per side
+  const padH   = w > 1023 ? 48 : w > 599 ? 24 : 16;
   const availW = w - 2 * padH;
 
-  GRID_COLS = Math.floor((availW + THUMB_GAP) / colW);
-  COL_W     = colW;
+  GRID_COLS    = getGridCols();
+  const thumbW = (availW - (GRID_COLS - 1) * THUMB_GAP) / GRID_COLS;
+  const thumbH = thumbW * 3 / 4;
+  COL_W        = thumbW + THUMB_GAP;
+
   document.documentElement.style.setProperty('--thumb-h',   `${thumbH}px`);
   document.documentElement.style.setProperty('--thumb-w',   `${thumbW}px`);
   document.documentElement.style.setProperty('--thumb-gap', `${THUMB_GAP}px`);
   document.documentElement.style.setProperty('--row-gap',   `${ROW_GAP}px`);
 
-  // Update gap zone widths if timeline is already rendered
+  const timelineEl = document.getElementById('timeline');
+  if (timelineEl) timelineEl.style.paddingRight = '';
+
   updateGapZones();
 }
 
+function calcCols(sr, ss) {
+  const availCols = GRID_COLS - 1;               // 1 col always reserved for gap
+  const half      = Math.floor(availCols / 2);   // max columns per side (symmetric)
+
+  const sunriseCols_ideal = Math.min(sr, half);
+  const sunsetCols        = Math.min(ss, availCols - sunriseCols_ideal);
+  const sunriseCols       = Math.min(sr, availCols - sunsetCols);
+  const gapCols           = GRID_COLS - sunriseCols - sunsetCols;
+
+  return { sunriseCols, sunsetCols, gapCols };
+}
+
+function initScrollPosition(strip) {
+  const left  = strip.querySelector('.cluster-sunrise');
+  const right = strip.querySelector('.cluster-sunset');
+  if (left)  left.scrollLeft  = 0;
+  if (right) right.scrollLeft = 0;
+}
+
 function updateGapZones() {
-  const thumbW = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--thumb-w')) || 1;
   document.querySelectorAll('.gap-zone').forEach(gz => {
     const strip = gz.parentElement;
     if (!strip) return;
 
+    const sr = parseInt(gz.dataset.sr || 0);
+    const ss = parseInt(gz.dataset.ss || 0);
+    const { sunriseCols, sunsetCols, gapCols } = calcCols(sr, ss);
+
     const leftCluster  = strip.querySelector('.cluster-sunrise');
     const rightCluster = strip.querySelector('.cluster-sunset');
 
-    // Reset any previous clipping
-    [leftCluster, rightCluster].forEach(c => {
-      if (c) { c.style.width = ''; c.style.flexShrink = ''; c.style.overflow = ''; c.style.justifyContent = ''; }
-    });
+    if (leftCluster)  leftCluster.style.width = `${sunriseCols * COL_W - THUMB_GAP}px`;
+    gz.style.width    = `${gapCols * COL_W - THUMB_GAP}px`;
+    gz.style.flexGrow = '0';
+    if (rightCluster) rightCluster.style.width = `${sunsetCols * COL_W - THUMB_GAP}px`;
 
-    // Clip overflowing clusters so gap zone stays visible at minimum 1 slot wide
-    if (GRID_COLS && COL_W) {
-      const sr    = parseInt(gz.dataset.sr || 0);
-      const ss    = parseInt(gz.dataset.ss || 0);
-      const srMax = Math.max(1, GRID_COLS - ss - 1);
-      const ssMax = Math.max(1, GRID_COLS - sr - 1);
+    gz.dataset.slots = gapCols >= 3 ? '3' : gapCols >= 2 ? '2' : '1';
 
-      if (leftCluster && sr > srMax) {
-        leftCluster.style.width          = `${srMax * COL_W - THUMB_GAP}px`;
-        leftCluster.style.flexShrink     = '0';
-        leftCluster.style.overflow       = 'hidden';
-        leftCluster.style.justifyContent = 'flex-end';
-      }
-      if (rightCluster && ss > ssMax) {
-        rightCluster.style.width         = `${ssMax * COL_W - THUMB_GAP}px`;
-        rightCluster.style.flexShrink    = '0';
-        rightCluster.style.overflow      = 'hidden';
-      }
-    }
-
-    // Measure after clipping is applied (offsetWidth read forces reflow)
-    const w = gz.offsetWidth;
-    gz.dataset.slots = w >= 3 * thumbW ? '3' : w >= 2 * thumbW ? '2' : '1';
+    initScrollPosition(strip);
   });
 }
 
 let resizeTimer;
-window.addEventListener('resize', () => {
+function onResize() {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(initGrid, 120);
-});
+}
+window.addEventListener('resize', onResize);
+window.addEventListener('orientationchange', onResize);
 
 
 // ── SOLAR NOON ──────────────────────────────────────────────

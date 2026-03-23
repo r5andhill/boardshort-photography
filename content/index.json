@@ -1,5 +1,685 @@
 [
   {
+    "date": "2026-03-22",
+    "location": "St. Pete Beach, FL",
+    "images": [
+      {
+        "src": "/static/uploads/IMG_3803_2026-03-22_0701.jpeg",
+        "original": "IMG_3803",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:01",
+        "date": "2026-03-22",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "65°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3805_2026-03-22_0709.jpeg",
+        "original": "IMG_3805",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:09",
+        "date": "2026-03-22",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "65°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3808_2026-03-22_0925.jpeg",
+        "original": "IMG_3808",
+        "type": "image",
+        "orientation": "h",
+        "time": "09:25",
+        "date": "2026-03-22",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "65°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3811_2026-03-22_1921.jpeg",
+        "original": "IMG_3811",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:21",
+        "date": "2026-03-22",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "66°F Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3816_2026-03-22_1943.jpeg",
+        "original": "IMG_3816",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:43",
+        "date": "2026-03-22",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "66°F Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3819_2026-03-22_2015.jpeg",
+        "original": "IMG_3819",
+        "type": "image",
+        "orientation": "h",
+        "time": "20:15",
+        "date": "2026-03-22",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "66°F Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-22_2110.mp4",
+        "original": "GX010697",
+        "type": "video",
+        "orientation": "h",
+        "time": "21:10",
+        "date": "2026-03-22",
+        "tag": "sunset",
+        "weather": " ",
+        "location": "St. Pete Beach, FL"
+      }
+    ]
+  },
+  {
+    "date": "2026-03-21",
+    "location": "St. Pete Beach, FL",
+    "images": [
+      {
+        "src": "/static/uploads/IMG_3709_2026-03-21_0701.jpeg",
+        "original": "IMG_3709",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:01",
+        "date": "2026-03-21",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "72°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3730_2026-03-21_0928.jpeg",
+        "original": "IMG_3730",
+        "type": "image",
+        "orientation": "h",
+        "time": "09:28",
+        "date": "2026-03-21",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "72°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3734_2026-03-21_0928.jpeg",
+        "original": "IMG_3734",
+        "type": "image",
+        "orientation": "h",
+        "time": "09:28",
+        "date": "2026-03-21",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "72°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3748_2026-03-21_0939.jpeg",
+        "original": "IMG_3748",
+        "type": "image",
+        "orientation": "h",
+        "time": "09:39",
+        "date": "2026-03-21",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "72°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3769_2026-03-21_1854.jpeg",
+        "original": "IMG_3769",
+        "type": "image",
+        "orientation": "h",
+        "time": "18:54",
+        "date": "2026-03-21",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "66°F Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3773_2026-03-21_1854.jpeg",
+        "original": "IMG_3773",
+        "type": "image",
+        "orientation": "h",
+        "time": "18:54",
+        "date": "2026-03-21",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "66°F Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-21_1924.mp4",
+        "original": "GX010696",
+        "type": "video",
+        "orientation": "h",
+        "time": "19:24",
+        "date": "2026-03-21",
+        "tag": "sunset",
+        "weather": " ",
+        "location": "St. Pete Beach, FL"
+      }
+    ]
+  },
+  {
+    "date": "2026-03-20",
+    "location": "St. Pete Beach, FL",
+    "images": [
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-20_0709.mp4",
+        "original": "GX010693",
+        "type": "video",
+        "orientation": "h",
+        "time": "07:09",
+        "date": "2026-03-20",
+        "tag": "sunrise",
+        "weather": " ",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3674_2026-03-20_0711.jpeg",
+        "original": "IMG_3674",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:11",
+        "date": "2026-03-20",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "57°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3678_2026-03-20_0732.jpeg",
+        "original": "IMG_3678",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:32",
+        "date": "2026-03-20",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "57°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3690_2026-03-20_1933.jpeg",
+        "original": "IMG_3690",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:33",
+        "date": "2026-03-20",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "64°F  Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3692_2026-03-20_2005.jpeg",
+        "original": "IMG_3692",
+        "type": "image",
+        "orientation": "h",
+        "time": "20:05",
+        "date": "2026-03-20",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "64°F  Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3694_2026-03-20_2005.jpeg",
+        "original": "IMG_3694",
+        "type": "image",
+        "orientation": "h",
+        "time": "20:05",
+        "date": "2026-03-20",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "64°F  Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3704_2026-03-20_2011.jpeg",
+        "original": "IMG_3704",
+        "type": "image",
+        "orientation": "h",
+        "time": "20:11",
+        "date": "2026-03-20",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "64°F  Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-20_1901.mp4",
+        "original": "GX010695",
+        "type": "video",
+        "orientation": "h",
+        "time": "20:20",
+        "date": "2026-03-20",
+        "tag": "sunset",
+        "weather": " ",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
+      }
+    ]
+  },
+  {
+    "date": "2026-03-19",
+    "location": "St. Pete Beach, FL",
+    "images": [
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-19_0703.mp4",
+        "original": "GX010691",
+        "type": "video",
+        "orientation": "h",
+        "time": "07:03",
+        "date": "2026-03-19",
+        "tag": "sunrise",
+        "weather": " ",
+        "location": "Tampa, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3586_2026-03-19_0705.jpeg",
+        "original": "IMG_3586",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:05",
+        "date": "2026-03-19",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "72°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3589_2026-03-19_0725.jpeg",
+        "original": "IMG_3589",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:25",
+        "date": "2026-03-19",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "60°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3590_2026-03-19_0726.jpeg",
+        "original": "IMG_3590",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:26",
+        "date": "2026-03-19",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "60°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3599_2026-03-19_0728.jpeg",
+        "original": "IMG_3599",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:28",
+        "date": "2026-03-19",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "60°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3630_2026-03-19_0748.jpeg",
+        "original": "IMG_3630",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:48",
+        "date": "2026-03-19",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "72°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3664_2026-03-19_1943.jpeg",
+        "original": "IMG_3664",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:43",
+        "date": "2026-03-19",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "66°F Mostly Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3665_2026-03-19_1943.jpeg",
+        "original": "IMG_3665",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:43",
+        "date": "2026-03-19",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "66°F Mostly Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-19_1929.mp4",
+        "original": "GX010692",
+        "type": "video",
+        "orientation": "h",
+        "time": "19:43",
+        "date": "2026-03-19",
+        "tag": "sunset",
+        "weather": " ",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
+      }
+    ]
+  },
+  {
+    "date": "2026-03-18",
+    "location": "St. Pete Beach, FL",
+    "images": [
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-18_0705.mp4",
+        "original": "GX010690",
+        "type": "video",
+        "orientation": "h",
+        "time": "07:05",
+        "date": "2026-03-18",
+        "tag": "sunrise",
+        "weather": " ",
+        "location": "St. Pete Beach, FL"
+      }
+    ]
+  },
+  {
+    "date": "2026-03-17",
+    "location": "St. Pete Beach, FL",
+    "images": [
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-17_0713.mp4",
+        "original": "GX010688",
+        "type": "video",
+        "orientation": "h",
+        "time": "07:13",
+        "date": "2026-03-17",
+        "tag": "sunrise",
+        "weather": " ",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3542_2026-03-17_0716.jpeg",
+        "original": "IMG_3542",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:16",
+        "date": "2026-03-17",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "56°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3545_2026-03-17_0814.jpeg",
+        "original": "IMG_3545",
+        "type": "image",
+        "orientation": "h",
+        "time": "08:14",
+        "date": "2026-03-17",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "56°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3559_2026-03-17_1926.jpeg",
+        "original": "IMG_3559",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:26",
+        "date": "2026-03-17",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "50°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3560_2026-03-17_1935.jpeg",
+        "original": "IMG_3560",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:35",
+        "date": "2026-03-17",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "50°F Sunny",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-17_1859.mp4",
+        "original": "GX010689",
+        "type": "video",
+        "orientation": "h",
+        "time": "20:00",
+        "date": "2026-03-17",
+        "tag": "sunset",
+        "weather": " ",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
+      }
+    ]
+  },
+  {
+    "date": "2026-03-16",
+    "location": "St. Pete Beach, FL",
+    "images": [
+      {
+        "src": "/static/uploads/IMG_3434_2026-03-16_0742.jpeg",
+        "original": "IMG_3434",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:42",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3440_2026-03-16_0745.jpeg",
+        "original": "IMG_3440",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:45",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3443_2026-03-16_0746.jpeg",
+        "original": "IMG_3443",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:46",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3449_2026-03-16_0749.jpeg",
+        "original": "IMG_3449",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:49",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3467_2026-03-16_0756.jpeg",
+        "original": "IMG_3467",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:56",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3495_2026-03-16_1629.jpeg",
+        "original": "IMG_3495",
+        "type": "image",
+        "orientation": "h",
+        "time": "16:29",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3500_2026-03-16_1935.jpeg",
+        "original": "IMG_3500",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:35",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "56°F Mostly Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3504_2026-03-16_1936.jpeg",
+        "original": "IMG_3504",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:36",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "56°F Mostly Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3507_2026-03-16_1936.jpeg",
+        "original": "IMG_3507",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:36",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3508_2026-03-16_1936.jpeg",
+        "original": "IMG_3508",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:36",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "56°F Mostly Clear",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3515_2026-03-16_1941.jpeg",
+        "original": "IMG_3515",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:41",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3525_2026-03-16_1947.jpeg",
+        "original": "IMG_3525",
+        "type": "image",
+        "orientation": "h",
+        "time": "19:47",
+        "date": "2026-03-16",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunset",
+        "weather": "56°F Mostly Clear",
+        "location": "St. Pete Beach, FL"
+      }
+    ]
+  },
+  {
     "date": "2026-03-15",
     "location": "St. Pete Beach, FL",
     "images": [
@@ -11,7 +691,164 @@
         "time": "07:15",
         "date": "2026-03-15",
         "tag": "sunrise",
-        "weather": " ",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL",
+        "hero": "true"
+      },
+      {
+        "src": "/static/uploads/IMG_3251_2026-03-15_0715.jpeg",
+        "original": "IMG_3251",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:19",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3257_2026-03-15_0720.jpeg",
+        "original": "IMG_3257",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:20",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3280_2026-03-15_0740.jpeg",
+        "original": "IMG_3280",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:40",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3285_2026-03-15_0743.jpeg",
+        "original": "IMG_3285",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:43",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3286_2026-03-15_0744.jpeg",
+        "original": "IMG_3286",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:44",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3298_2026-03-15_0750.jpeg",
+        "original": "IMG_3298",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:50",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3303_2026-03-15_0752.jpeg",
+        "original": "IMG_3303",
+        "type": "image",
+        "orientation": "h",
+        "time": "07:52",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3320_2026-03-15_0811.jpeg",
+        "original": "IMG_3320",
+        "type": "image",
+        "orientation": "h",
+        "time": "08:11",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "true",
+        "tag": "sunrise",
+        "weather": "",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3325_2026-03-15_0818.jpeg",
+        "original": "IMG_3325",
+        "type": "image",
+        "orientation": "h",
+        "time": "08:18",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3329_2026-03-15_0821.jpeg",
+        "original": "IMG_3329",
+        "type": "image",
+        "orientation": "h",
+        "time": "08:21",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3336_2026-03-15_0823.jpeg",
+        "original": "IMG_3336",
+        "type": "image",
+        "orientation": "h",
+        "time": "08:23",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
+        "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "/static/uploads/IMG_3337_2026-03-15_0824.jpeg",
+        "original": "IMG_3337",
+        "type": "image",
+        "orientation": "h",
+        "time": "08:24",
+        "date": "2026-03-15",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "55°F Partly Cloudy",
         "location": "St. Pete Beach, FL"
       },
       {
@@ -138,6 +975,19 @@
     "location": "St. Pete Beach, FL",
     "images": [
       {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-13_0727.mp4",
+        "original": "GX010679",
+        "type": "video",
+        "orientation": "h",
+        "time": "07:15",
+        "date": "2026-03-13",
+        "caption": "",
+        "hero": "false",
+        "tag": "sunrise",
+        "weather": "",
+        "location": "St. Pete Beach, FL"
+      },
+      {
         "src": "/static/uploads/img_2026-03-13_0720.jpeg",
         "original": "IMG_3070",
         "type": "image",
@@ -161,19 +1011,6 @@
         "hero": "false",
         "tag": "sunrise",
         "weather": "75°F Rain",
-        "location": "St. Pete Beach, FL"
-      },
-      {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-13_0727.mp4",
-        "original": "GX010679",
-        "type": "video",
-        "orientation": "h",
-        "time": "07:27",
-        "date": "2026-03-13",
-        "caption": "",
-        "hero": "false",
-        "tag": "sunrise",
-        "weather": "",
         "location": "St. Pete Beach, FL"
       },
       {
@@ -339,17 +1176,6 @@
         "location": "St. Pete Beach, FL"
       },
       {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-12_1811.mp4",
-        "original": "GX010678",
-        "type": "video",
-        "orientation": "h",
-        "time": "18:11",
-        "date": "2026-03-12",
-        "tag": "sunset",
-        "weather": "70°F Mostly Sunny",
-        "location": "St. Pete Beach, FL"
-      },
-      {
         "src": "/static/uploads/img_2026-03-12_1818.jpeg",
         "original": "IMG_3067",
         "type": "image",
@@ -361,6 +1187,19 @@
         "tag": "sunset",
         "weather": "70°F Mostly Sunny",
         "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-12_1811.mp4",
+        "original": "GX010678",
+        "type": "video",
+        "orientation": "h",
+        "time": "18:20",
+        "date": "2026-03-12",
+        "tag": "sunset",
+        "weather": "70°F Mostly Sunny",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
       }
     ]
   },
@@ -981,17 +1820,6 @@
         "location": "Delray Beach, FL"
       },
       {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-07_1807.mp4",
-        "original": "GX010670",
-        "type": "video",
-        "orientation": "h",
-        "time": "18:07",
-        "date": "2026-03-07",
-        "tag": "sunset",
-        "weather": "75°F Mostly Clear",
-        "location": "Pompano Beach, FL"
-      },
-      {
         "src": "/static/uploads/img_2026-03-07_1814.jpeg",
         "original": "IMG_2677",
         "type": "image",
@@ -1016,6 +1844,19 @@
         "tag": "sunset",
         "weather": "75°F Mostly Clear",
         "location": "Delray Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-07_1807.mp4",
+        "original": "GX010670",
+        "type": "video",
+        "orientation": "h",
+        "time": "19:07",
+        "date": "2026-03-07",
+        "tag": "sunset",
+        "weather": "75°F Mostly Clear",
+        "location": "Pompano Beach, FL",
+        "hero": "false",
+        "caption": ""
       }
     ]
   },
@@ -1087,17 +1928,6 @@
         "location": "Pompano Beach, FL"
       },
       {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-06_1727.mp4",
-        "original": "GX010668",
-        "type": "video",
-        "orientation": "h",
-        "time": "17:27",
-        "date": "2026-03-06",
-        "tag": "sunset",
-        "weather": "74°F Mostly Clear",
-        "location": "Pompano Beach, FL"
-      },
-      {
         "src": "/static/uploads/img_2026-03-06_1728.jpeg",
         "original": "IMG_2399",
         "type": "image",
@@ -1148,6 +1978,19 @@
         "tag": "sunset",
         "weather": "74°F Mostly Clear",
         "location": "Pompano Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-06_1727.mp4",
+        "original": "GX010668",
+        "type": "video",
+        "orientation": "h",
+        "time": "17:59",
+        "date": "2026-03-06",
+        "tag": "sunset",
+        "weather": "74°F Mostly Clear",
+        "location": "Pompano Beach, FL",
+        "hero": "false",
+        "caption": ""
       }
     ]
   },
@@ -1286,17 +2129,6 @@
         "location": "St. Pete Beach, FL"
       },
       {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-05_1827.mp4",
-        "original": "GX010666",
-        "type": "video",
-        "orientation": "h",
-        "time": "18:27",
-        "date": "2026-03-05",
-        "tag": "sunset",
-        "weather": "",
-        "location": "St. Pete Beach, FL"
-      },
-      {
         "src": "/static/uploads/img_2026-03-05_1834.jpeg",
         "original": "IMG_2299",
         "type": "image",
@@ -1321,6 +2153,19 @@
         "tag": "sunset",
         "weather": "",
         "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-05_1827.mp4",
+        "original": "GX010666",
+        "type": "video",
+        "orientation": "h",
+        "time": "22:00",
+        "date": "2026-03-05",
+        "tag": "sunset",
+        "weather": "",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
       }
     ]
   },
@@ -1340,17 +2185,6 @@
         "tag": "sunrise",
         "weather": "",
         "location": "St. Pete Beach, FL"
-      },
-      {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-04_1742.mp4",
-        "original": "GX010663",
-        "type": "video",
-        "orientation": "h",
-        "time": "17:42",
-        "date": "2026-03-04",
-        "tag": "sunset",
-        "weather": "73°F Mostly Clear",
-        "location": "Pompano Beach, FL"
       },
       {
         "src": "/static/uploads/img_2026-03-04_1743.jpeg",
@@ -1403,6 +2237,19 @@
         "tag": "sunset",
         "weather": "73°F Mostly Clear",
         "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-04_1742.mp4",
+        "original": "GX010663",
+        "type": "video",
+        "orientation": "h",
+        "time": "18:42",
+        "date": "2026-03-04",
+        "tag": "sunset",
+        "weather": "73°F Mostly Clear",
+        "location": "Pompano Beach, FL",
+        "hero": "false",
+        "caption": ""
       }
     ]
   },
@@ -1508,17 +2355,6 @@
         "location": "St. Pete Beach, FL"
       },
       {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-02_1755.mp4",
-        "original": "GX010660",
-        "type": "video",
-        "orientation": "h",
-        "time": "17:55",
-        "date": "2026-03-02",
-        "tag": "sunset",
-        "weather": "",
-        "location": "St. Pete Beach, FL"
-      },
-      {
         "src": "/static/uploads/img_2026-03-02_1807.jpeg",
         "original": "IMG_1936",
         "type": "image",
@@ -1608,6 +2444,19 @@
         "tag": "sunset",
         "weather": "",
         "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-02_1755.mp4",
+        "original": "GX010660",
+        "type": "video",
+        "orientation": "h",
+        "time": "19:55",
+        "date": "2026-03-02",
+        "tag": "sunset",
+        "weather": "",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
       }
     ]
   },
@@ -1615,6 +2464,19 @@
     "date": "2026-03-01",
     "location": ", ",
     "images": [
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-01_0657.mp4",
+        "original": "GX010656",
+        "type": "video",
+        "orientation": "h",
+        "time": "06:50",
+        "date": "2026-03-01",
+        "tag": "sunrise",
+        "weather": "",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
+      },
       {
         "src": "/static/uploads/img_2026-03-01_0657.jpeg",
         "original": "GX010656",
@@ -1629,17 +2491,6 @@
         "location": ", "
       },
       {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-01_0657.mp4",
-        "original": "GX010656",
-        "type": "video",
-        "orientation": "h",
-        "time": "06:57",
-        "date": "2026-03-01",
-        "tag": "sunrise",
-        "weather": "",
-        "location": "St. Pete Beach, FL"
-      },
-      {
         "src": "/static/uploads/img_2026-03-01_1820.jpeg",
         "original": "IMG_1834",
         "type": "image",
@@ -1648,17 +2499,6 @@
         "date": "2026-03-01",
         "caption": "",
         "hero": "false",
-        "tag": "sunset",
-        "weather": "",
-        "location": "St. Pete Beach, FL"
-      },
-      {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-01_1821.mp4",
-        "original": "GX010657",
-        "type": "video",
-        "orientation": "h",
-        "time": "18:21",
-        "date": "2026-03-01",
         "tag": "sunset",
         "weather": "",
         "location": "St. Pete Beach, FL"
@@ -1688,6 +2528,19 @@
         "tag": "sunset",
         "weather": "",
         "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-03-01_1821.mp4",
+        "original": "GX010657",
+        "type": "video",
+        "orientation": "h",
+        "time": "18:50",
+        "date": "2026-03-01",
+        "tag": "sunset",
+        "weather": "",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
       }
     ]
   },
@@ -2039,17 +2892,6 @@
         "location": "St. Pete Beach, FL"
       },
       {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-02-24_1815.mp4",
-        "original": "GX010648",
-        "type": "video",
-        "orientation": "h",
-        "time": "18:15",
-        "date": "2026-02-24",
-        "tag": "sunset",
-        "weather": "",
-        "location": "St. Pete Beach, FL"
-      },
-      {
         "src": "/static/uploads/img_2026-02-24_1841.jpeg",
         "original": "IMG_1357",
         "type": "image",
@@ -2061,6 +2903,19 @@
         "tag": "sunset",
         "weather": "",
         "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-02-24_1815.mp4",
+        "original": "GX010648",
+        "type": "video",
+        "orientation": "h",
+        "time": "18:55",
+        "date": "2026-02-24",
+        "tag": "sunset",
+        "weather": "",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
       }
     ]
   },
@@ -2448,6 +3303,19 @@
     "location": "St. Pete Beach, FL",
     "images": [
       {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-02-18_0640.mp4",
+        "original": "GX010641",
+        "type": "video",
+        "orientation": "h",
+        "time": "06:30",
+        "date": "2026-02-18",
+        "tag": "sunrise",
+        "weather": "",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
+      },
+      {
         "src": "/static/uploads/img_2026-02-18_0640.jpeg",
         "original": "IMG_0645",
         "type": "image",
@@ -2456,17 +3324,6 @@
         "date": "2026-02-18",
         "caption": "",
         "hero": "",
-        "tag": "sunrise",
-        "weather": "",
-        "location": "St. Pete Beach, FL"
-      },
-      {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-02-18_0640.mp4",
-        "original": "GX010641",
-        "type": "video",
-        "orientation": "h",
-        "time": "06:40",
-        "date": "2026-02-18",
         "tag": "sunrise",
         "weather": "",
         "location": "St. Pete Beach, FL"
@@ -2494,17 +3351,6 @@
         "caption": "",
         "hero": "",
         "tag": "sunrise",
-        "weather": "",
-        "location": "St. Pete Beach, FL"
-      },
-      {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-02-18_1752.mp4",
-        "original": "GX010642",
-        "type": "video",
-        "orientation": "h",
-        "time": "17:52",
-        "date": "2026-02-18",
-        "tag": "sunset",
         "weather": "",
         "location": "St. Pete Beach, FL"
       },
@@ -2559,6 +3405,19 @@
         "tag": "sunset",
         "weather": "",
         "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-02-18_1752.mp4",
+        "original": "GX010642",
+        "type": "video",
+        "orientation": "h",
+        "time": "18:52",
+        "date": "2026-02-18",
+        "tag": "sunset",
+        "weather": "",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
       }
     ]
   },
@@ -2576,17 +3435,6 @@
         "caption": "",
         "hero": "",
         "tag": "sunrise",
-        "weather": "",
-        "location": "St. Pete Beach, FL"
-      },
-      {
-        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-02-17_1734.mp4",
-        "original": "GX010640",
-        "type": "video",
-        "orientation": "h",
-        "time": "17:34",
-        "date": "2026-02-17",
-        "tag": "sunset",
         "weather": "",
         "location": "St. Pete Beach, FL"
       },
@@ -2615,6 +3463,19 @@
         "tag": "sunset",
         "weather": "",
         "location": "St. Pete Beach, FL"
+      },
+      {
+        "src": "https://pub-eb2f2d553871489795779b051dcf0ab5.r2.dev/vid_2026-02-17_1734.mp4",
+        "original": "GX010640",
+        "type": "video",
+        "orientation": "h",
+        "time": "18:34",
+        "date": "2026-02-17",
+        "tag": "sunset",
+        "weather": "",
+        "location": "St. Pete Beach, FL",
+        "hero": "false",
+        "caption": ""
       }
     ]
   },
